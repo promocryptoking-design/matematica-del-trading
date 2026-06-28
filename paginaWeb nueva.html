@@ -160,7 +160,8 @@ nav{
 .ticker-dot{width:5px;height:5px;border-radius:50%;}
 
 /* HERO ACTIONS */
-.hero-actions{display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap;}
+.hero-actions{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
+.btn-hero-full{width:100%;justify-content:center;font-size:16px;padding:16px 28px;letter-spacing:0.2px;}
 .btn-hero-main{
   padding:14px 30px;border-radius:10px;font-size:15px;font-weight:800;
   background:var(--green);color:#000;border:none;cursor:pointer;
@@ -1029,8 +1030,6 @@ footer{
   <!-- LEFT -->
   <div class="hero-left">
 
-    <div class="hero-eyebrow"><div class="live-pulse"></div>Order Flow · En vivo</div>
-
     <h1 class="hero-h1">
       Sé parte<br>
       <span class="accent">del 1%</span><br>
@@ -1052,13 +1051,9 @@ footer{
     </div>
 
     <div class="hero-actions">
-      <button class="btn-hero-main" onclick="openRegister()">
+      <button class="btn-hero-main btn-hero-full" onclick="openRegister()">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Quiero acceso gratis ahora
-      </button>
-      <button class="btn-hero-pay" onclick="openPayModal()">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        Plan VIP completo
+        Únete gratis hoy — es 100% gratuito
       </button>
     </div>
 
@@ -1268,7 +1263,7 @@ footer{
 <div class="overlay" id="ovReg">
   <div class="modal-box">
     <button class="modal-x" onclick="closeAll()">✕</button>
-    <div class="modal-title">Únete al VIP Gratis</div>
+    <div class="modal-title">Únete gratis hoy</div>
     <div class="stp-nav">
       <div class="stp-dot on" id="sd1">1</div>
       <div class="stp-line" id="sl1"></div>
@@ -1277,9 +1272,22 @@ footer{
       <div class="stp-dot" id="sd3">3</div>
     </div>
     <div class="stp-body on" id="sb1">
-      <div class="info-b">Crea tu cuenta exclusivamente bajo nuestro enlace <strong>Bitunix</strong>. Si ya tienes cuenta sin nuestro enlace, necesitas crear una nueva.</div>
-      <a href="https://www.bitunix.com/register?vipCode=mact" target="_blank" class="bitunix-a">🟢 Crear cuenta en Bitunix ↗</a>
-      <button class="m-btn m-btn-ghost" onclick="goStep(2)">Ya tengo cuenta →</button>
+      <div class="info-b">Crea tu cuenta en <strong>Bitunix</strong> bajo nuestro enlace para activar el acceso gratuito completo. Si ya tienes una sin nuestro enlace, necesitas crear una nueva.</div>
+      <a href="https://www.bitunix.com/register?vipCode=mact" target="_blank" class="bitunix-a">🟢 Crear cuenta en Bitunix — Gratis ↗</a>
+      <button class="m-btn m-btn-ghost" onclick="goStep(2)">Ya tengo cuenta con el enlace →</button>
+
+      <!-- SEPARADOR + OPCIÓN DE PAGO -->
+      <div style="display:flex;align-items:center;gap:10px;margin:18px 0 12px;">
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+        <span style="font-size:10px;color:var(--text3);white-space:nowrap">¿Operas en otro exchange?</span>
+        <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+      </div>
+      <p style="font-size:11px;color:var(--text3);text-align:center;margin-bottom:10px;line-height:1.5">
+        También puedes acceder mediante suscripción mensual desde cualquier plataforma.
+      </p>
+      <button class="m-btn" onclick="closeAll();openPayModal()" style="background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--text2);font-size:11px;padding:9px;">
+        💳 Ver plan de pago mensual →
+      </button>
     </div>
     <div class="stp-body" id="sb2">
       <div class="info-b" style="border-color:rgba(0,255,102,0.2)"><span style="display:block;margin-bottom:6px;font-size:15px">💰 <strong>Mínimo 100 USDT</strong></span>Capital 100% tuyo para operar. No es una membresía, es tu capital de trabajo.</div>
