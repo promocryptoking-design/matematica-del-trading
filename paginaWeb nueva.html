@@ -255,21 +255,33 @@ nav{
 .pay-header{text-align:center;margin-bottom:28px;}
 .pay-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.25);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.5px;margin-bottom:14px;}
 .pay-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;}
-.pay-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--gold);line-height:1;}
+/* PRICE WRAP */
+.pay-price-wrap{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 0 2px;}
+.pay-price-orig{font-family:'JetBrains Mono',monospace;font-size:36px;font-weight:700;color:var(--gold);line-height:1;transition:all 0.4s ease;}
+.pay-price-orig.struck{color:var(--text3);text-decoration:line-through;font-size:24px;}
+.pay-usdt-lbl{font-size:16px;color:var(--text2);font-weight:400;}
+.pay-disc-badge{
+  display:none;padding:3px 10px;border-radius:20px;
+  background:rgba(0,255,102,0.12);border:1px solid rgba(0,255,102,0.35);
+  color:var(--green);font-size:11px;font-weight:800;letter-spacing:0.5px;
+  animation:fadeSlideIn 0.35s ease forwards;
+}
+.pay-price-final{
+  display:none;font-family:'JetBrains Mono',monospace;
+  font-size:36px;font-weight:700;color:var(--green);line-height:1;
+  animation:fadeSlideIn 0.35s ease forwards;
+}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
 .pay-period{font-size:12px;color:var(--text3);margin-top:4px;}
-.pay-includes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;}
-.pay-inc-headline{
-  font-size:15px;line-height:1.4;color:var(--text);
-  margin-bottom:14px;padding-bottom:14px;
-  border-bottom:1px solid var(--border);
-}
+/* INCLUDES */
+.pay-includes{margin:20px 0 16px;}
+.pay-inc-headline{font-size:15px;line-height:1.4;color:var(--text);}
 .pay-inc-headline strong{color:var(--green);}
-.pay-inc-item{
-  display:flex;align-items:center;gap:8px;
-  font-size:12px;color:var(--text2);
-  padding:4px 0;
-}
+.pay-inc-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);padding:4px 0;}
 .pay-inc-item::before{content:none;}
+/* PROMO */
+.promo-wrap{margin-bottom:16px;}
+.promo-msg{font-size:11px;margin-top:7px;min-height:16px;transition:color 0.3s;}
 .pay-divider{height:1px;background:var(--border);margin:20px 0;}
 .pay-qr-section{display:flex;gap:20px;align-items:center;margin-bottom:20px;}
 .pay-qr-box{flex-shrink:0;padding:10px;background:#fff;border-radius:12px;line-height:0;}
@@ -1314,40 +1326,56 @@ footer{
   <div class="pay-modal">
     <button class="modal-x" onclick="closeAll()">✕</button>
     <div class="pay-header">
-      <div class="pay-badge">👑 Acceso VIP · Suscripción mensual</div>
-      <div class="pay-title">VIP de Pago</div>
-      <div class="pay-price">50 <span style="font-size:18px;color:var(--text2)">USDT</span></div>
+      <div class="pay-badge">Acceso VIP · Suscripción mensual</div>
+      <div class="pay-title">Plan VIP</div>
+
+      <!-- PRECIO CON ANIMACIÓN DE DESCUENTO -->
+      <div class="pay-price-wrap">
+        <div class="pay-price-orig" id="payOrigWrap">
+          <span id="payPriceNum">100</span>
+          <span class="pay-usdt-lbl">USDT</span>
+        </div>
+        <div class="pay-disc-badge" id="payDiscBadge">— 50% OFF</div>
+        <div class="pay-price-final" id="payPriceFinal">50 <span class="pay-usdt-lbl">USDT</span></div>
+      </div>
+
       <div class="pay-period">/ mes · renovación manual</div>
     </div>
 
+    <!-- ACCESO -->
     <div class="pay-includes">
-      <div class="pay-inc-headline">Acceso completo a<br><strong>La Matemática del Trading</strong></div>
-      <div class="pay-inc-item">✓ Todas las herramientas sin restricciones</div>
-      <div class="pay-inc-item">✓ Sala privada VIP + señales exclusivas</div>
-      <div class="pay-inc-item">✓ Torneos y estrategias avanzadas</div>
-      <div class="pay-inc-item">✓ Soporte prioritario directo</div>
+      <div class="pay-inc-headline">Acceso completo al<br><strong>ecosistema VIP</strong></div>
+    </div>
+
+    <!-- CÓDIGO PROMO -->
+    <div class="promo-wrap">
+      <label class="m-label" style="margin-bottom:6px;display:block">Código promocional</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="m-input" id="promoCode" placeholder="Ingresa tu código" oninput="checkPromo()" style="flex:1;margin:0;text-transform:uppercase;letter-spacing:1px">
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
     </div>
 
     <div class="pay-divider"></div>
 
-    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px;">Dirección de pago · BSC (BEP-20)</div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px;">Dirección de pago · Red BSC (BEP-20)</div>
 
     <div class="pay-qr-section">
       <div class="pay-qr-box">
         <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=0x4cb6f10b29150efa6c148b84642c7b16132c61dc&bgcolor=FFFFFF&color=000000&margin=4" alt="QR de pago">
       </div>
       <div class="pay-addr-section">
-        <div class="pay-net">🔗 Red: Binance Smart Chain (BEP-20)</div>
+        <div class="pay-net">Red: Binance Smart Chain (BEP-20)</div>
         <div class="pay-addr" id="walletAddr">0x4cb6f10b29150efa6c148b84642c7b16132c61dc</div>
-        <button class="pay-copy-btn" onclick="copyWallet()">📋 Copiar dirección</button>
-        <div style="margin-top:10px;font-size:10px;color:var(--text3);line-height:1.5">⚠️ Envía <strong style="color:var(--gold)">solo USDT en red BSC</strong>. Otras redes o tokens se perderán.</div>
+        <button class="pay-copy-btn" onclick="copyWallet()">Copiar dirección</button>
+        <div style="margin-top:10px;font-size:10px;color:var(--text3);line-height:1.5">Envía <strong style="color:var(--gold)">solo USDT en red BSC</strong>. Otras redes o tokens se perderán.</div>
       </div>
     </div>
 
     <button class="pay-cta" onclick="document.getElementById('ovPay').classList.remove('open');document.getElementById('ovPayForm').classList.add('open')">
-      ✅ Ya realicé el pago — Verificar
+      Ya realicé el pago — Verificar
     </button>
-    <div class="pay-security">🔒 Pago peer-to-peer · Sin intermediarios · Activación en &lt;24h</div>
+    <div class="pay-security">Pago peer-to-peer · Sin intermediarios · Activación en &lt;24h</div>
   </div>
 </div>
 
@@ -1888,7 +1916,41 @@ function copyWallet(){
     if(btn){const orig=btn.textContent;btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent=orig,2000);}
   });
 }
-function openPayModal(){document.getElementById('ovPay').classList.add('open');}
+function openPayModal(){
+  document.getElementById('ovPay').classList.add('open');
+  // reset promo state
+  document.getElementById('promoCode').value='';
+  document.getElementById('promoMsg').textContent='';
+  document.getElementById('payDiscBadge').style.display='none';
+  document.getElementById('payPriceFinal').style.display='none';
+  document.getElementById('payOrigWrap').classList.remove('struck');
+}
+function checkPromo(){
+  var code=document.getElementById('promoCode').value.trim().toUpperCase();
+  var msg=document.getElementById('promoMsg');
+  var badge=document.getElementById('payDiscBadge');
+  var final=document.getElementById('payPriceFinal');
+  var orig=document.getElementById('payOrigWrap');
+  var VALID_CODES=['VIP50','MACT50','TRADING50','MATEMATICA50'];
+  if(VALID_CODES.indexOf(code)!==-1){
+    msg.textContent='Código válido — 50% de descuento aplicado';
+    msg.style.color='var(--green)';
+    badge.style.display='inline-flex';
+    final.style.display='block';
+    orig.classList.add('struck');
+  } else if(code.length>0){
+    msg.textContent='Código no válido';
+    msg.style.color='var(--red)';
+    badge.style.display='none';
+    final.style.display='none';
+    orig.classList.remove('struck');
+  } else {
+    msg.textContent='';
+    badge.style.display='none';
+    final.style.display='none';
+    orig.classList.remove('struck');
+  }
+}
 
 
 
