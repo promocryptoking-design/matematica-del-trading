@@ -161,16 +161,21 @@ nav{
 
 /* HERO ACTIONS */
 .hero-actions{display:flex;gap:12px;margin-bottom:28px;flex-wrap:wrap;}
-.btn-hero-full{width:100%;justify-content:center;font-size:16px;padding:16px 28px;letter-spacing:0.2px;}
+.btn-hero-full{width:100%;justify-content:center;font-size:18px;padding:20px 32px;letter-spacing:0.4px;}
 .btn-hero-main{
-  padding:14px 30px;border-radius:10px;font-size:15px;font-weight:800;
+  border-radius:12px;font-size:18px;font-weight:900;
   background:var(--green);color:#000;border:none;cursor:pointer;
-  display:flex;align-items:center;gap:8px;
-  box-shadow:0 0 28px var(--gglow);
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 0 0 0 rgba(0,255,102,0.5);
   transition:all 0.2s;font-family:'Inter',sans-serif;
-  letter-spacing:0.2px;
+  letter-spacing:0.3px;
+  animation:ctaPulse 2.4s ease-in-out infinite;
 }
-.btn-hero-main:hover{background:#1aff75;transform:translateY(-2px);box-shadow:0 6px 36px rgba(0,255,102,0.5);}
+@keyframes ctaPulse{
+  0%,100%{box-shadow:0 0 20px rgba(0,255,102,0.4),0 0 0 0 rgba(0,255,102,0.25);}
+  50%{box-shadow:0 0 40px rgba(0,255,102,0.65),0 0 0 8px rgba(0,255,102,0);}
+}
+.btn-hero-main:hover{background:#1aff75;transform:translateY(-2px);box-shadow:0 8px 48px rgba(0,255,102,0.6);animation:none;}
 .btn-hero-ghost{
   padding:14px 24px;border-radius:10px;font-size:14px;font-weight:600;
   background:transparent;color:var(--text);border:1px solid var(--border2);
@@ -1044,11 +1049,6 @@ footer{
       Una sola plataforma reemplaza <span style="color:var(--red);font-weight:700">5 suscripciones de pago</span>.<br>
       Deja de operar sin contexto. Empieza a ver lo que mueve el mercado <em>antes</em> de que se mueva.
     </p>
-
-    <!-- LIVE SCROLLING TICKER -->
-    <div class="live-ticker-wrap">
-      <div class="live-ticker-track" id="tickerTrack"></div>
-    </div>
 
     <div class="hero-actions">
       <button class="btn-hero-main btn-hero-full" onclick="openRegister()">
