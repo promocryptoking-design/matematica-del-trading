@@ -252,8 +252,18 @@ nav{
 .pay-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--gold);line-height:1;}
 .pay-period{font-size:12px;color:var(--text3);margin-top:4px;}
 .pay-includes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;}
-.pay-inc-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);}
-.pay-inc-item::before{content:'✓';color:var(--green);font-weight:700;font-size:11px;}
+.pay-inc-headline{
+  font-size:15px;line-height:1.4;color:var(--text);
+  margin-bottom:14px;padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+}
+.pay-inc-headline strong{color:var(--green);}
+.pay-inc-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;color:var(--text2);
+  padding:4px 0;
+}
+.pay-inc-item::before{content:none;}
 .pay-divider{height:1px;background:var(--border);margin:20px 0;}
 .pay-qr-section{display:flex;gap:20px;align-items:center;margin-bottom:20px;}
 .pay-qr-box{flex-shrink:0;padding:10px;background:#fff;border-radius:12px;line-height:0;}
@@ -817,6 +827,30 @@ canvas#chartCanvas{width:100%!important;height:100%!important;display:block;}
 }
 .feat-pill.hi{border-color:rgba(0,255,102,0.25);color:var(--green);background:var(--gdim);}
 
+/* TOOLS BADGE ROW */
+.tools-row{
+  display:flex;flex-wrap:wrap;gap:6px;
+  margin:14px 0 12px;
+}
+.tool-tag{
+  padding:4px 10px;border-radius:20px;
+  font-size:10px;font-weight:700;
+  background:rgba(0,255,102,0.06);
+  border:1px solid rgba(0,255,102,0.2);
+  color:rgba(0,255,102,0.85);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.3px;
+  white-space:nowrap;
+}
+/* HOOK LINE */
+.hero-hook{
+  font-size:13px;line-height:1.65;
+  color:var(--text2);
+  margin:0 0 20px;
+  border-left:2px solid rgba(0,255,102,0.35);
+  padding-left:12px;
+}
+
 /* SECTIONS */
 .section{padding:90px 80px;position:relative;z-index:1;}
 .section-lbl{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
@@ -994,16 +1028,32 @@ footer{
 <section class="hero">
   <!-- LEFT -->
   <div class="hero-left">
+
     <div class="hero-eyebrow"><div class="live-pulse"></div>Order Flow · En vivo</div>
 
     <h1 class="hero-h1">
-      Opera con<br>
-      <span class="accent">visión</span><br>
-      <span class="dim">institucional</span>
+      El 80% pierde.<br>
+      <span class="accent">Tú no tienes</span><br>
+      <span class="dim">que ser parte.</span>
     </h1>
 
     <p class="hero-sub">
-      Accede gratis al arsenal de herramientas que los traders de <strong>alto nivel</strong> usan a diario. Libro de órdenes, mapa de liquidez, delta, alertas IA — todo integrado. Solo necesitas operar en <strong>Bitunix</strong>.
+      Así es como operan las <strong>instituciones y grandes manos</strong> — con información que el mercado retail nunca tuvo. Ahora está todo en un solo lugar, <strong>100% gratis</strong>, operando en Bitunix.
+    </p>
+
+    <!-- TOOLS BADGE ROW -->
+    <div class="tools-row">
+      <div class="tool-tag">📖 Libro de Órdenes</div>
+      <div class="tool-tag">🔥 Heatmap LIQ</div>
+      <div class="tool-tag">👣 Footprint</div>
+      <div class="tool-tag">Δ Delta</div>
+      <div class="tool-tag">📈 CVD</div>
+      <div class="tool-tag">🤖 Alertas IA</div>
+    </div>
+
+    <p class="hero-hook">
+      Una sola plataforma reemplaza <span style="color:var(--red);font-weight:700">5 suscripciones de pago</span>.<br>
+      Deja de operar sin contexto. Empieza a ver lo que mueve el mercado <em>antes</em> de que se mueva.
     </p>
 
     <!-- LIVE SCROLLING TICKER -->
@@ -1014,11 +1064,11 @@ footer{
     <div class="hero-actions">
       <button class="btn-hero-main" onclick="openRegister()">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        Acceder gratis ahora
+        Quiero acceso gratis ahora
       </button>
       <button class="btn-hero-pay" onclick="openPayModal()">
         <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        VIP de Pago
+        Plan VIP completo
       </button>
     </div>
 
@@ -1269,14 +1319,11 @@ footer{
     </div>
 
     <div class="pay-includes">
-      <div class="pay-inc-item">Delta Matrix completo</div>
-      <div class="pay-inc-item">DCA Cuántico</div>
-      <div class="pay-inc-item">Recovery Pro</div>
-      <div class="pay-inc-item">Bitácora Pro</div>
-      <div class="pay-inc-item">Gestión Matemática</div>
-      <div class="pay-inc-item">Recompras Algorítmicas</div>
-      <div class="pay-inc-item">Torneo VIP</div>
-      <div class="pay-inc-item">Sala privada</div>
+      <div class="pay-inc-headline">Acceso completo a<br><strong>La Matemática del Trading</strong></div>
+      <div class="pay-inc-item">✓ Todas las herramientas sin restricciones</div>
+      <div class="pay-inc-item">✓ Sala privada VIP + señales exclusivas</div>
+      <div class="pay-inc-item">✓ Torneos y estrategias avanzadas</div>
+      <div class="pay-inc-item">✓ Soporte prioritario directo</div>
     </div>
 
     <div class="pay-divider"></div>
