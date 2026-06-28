@@ -76,9 +76,9 @@ nav{
 /* HERO SPLIT */
 .hero{
   min-height:100vh;display:grid;
-  grid-template-columns:1fr 1.15fr;
-  align-items:center;gap:0;
-  padding:62px 0 0;
+  grid-template-columns:1fr 1.2fr;
+  align-items:center;gap:60px;
+  padding:62px 60px 40px 80px;
   position:relative;z-index:1;
   overflow:hidden;
 }
@@ -93,10 +93,10 @@ nav{
 
 /* LEFT */
 .hero-left{
-  padding:0 0 0 80px;
+  padding:0;
   display:flex;flex-direction:column;
   justify-content:center;
-  max-width:600px;
+  max-width:560px;
 }
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:8px;
@@ -262,7 +262,7 @@ nav{
 /* RIGHT — DELTA MATRIX WINDOW */
 .hero-right{
   position:relative;display:flex;align-items:center;justify-content:flex-end;
-  padding:80px 32px 40px 0;height:100%;min-height:calc(100vh - 62px);
+  padding:0;height:100%;min-height:calc(100vh - 62px);
 }
 
 /* ===== DELTA MATRIX REAL LOOK ===== */
@@ -430,6 +430,66 @@ canvas#chartCanvas{width:100%!important;height:100%!important;display:block;}
   display:flex;align-items:center;gap:6px;
 }
 .dm-ai-row::before{content:'🧠';font-size:10px;}
+
+/* ===== GLOW OVERLAYS sobre la imagen real ===== */
+.glow-band-top{
+  position:absolute;
+  top:13%;left:4%;right:9%;
+  height:18%;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,255,102,0.07) 30%,
+    rgba(0,200,255,0.09) 60%,
+    transparent 100%);
+  pointer-events:none;
+  animation:glowPulse 3s ease-in-out infinite;
+  border-radius:2px;
+}
+.glow-band-bot{
+  position:absolute;
+  top:55%;left:4%;right:9%;
+  height:16%;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(0,220,255,0.10) 40%,
+    rgba(0,255,150,0.08) 70%,
+    transparent 100%);
+  pointer-events:none;
+  animation:glowPulse 2.4s ease-in-out infinite 0.8s;
+  border-radius:2px;
+}
+.glow-vol-right{
+  position:absolute;
+  top:0;right:0;
+  width:8%;height:100%;
+  background:linear-gradient(90deg,
+    transparent,
+    rgba(0,255,102,0.06) 40%,
+    rgba(0,255,102,0.04) 100%);
+  pointer-events:none;
+  animation:glowVolPulse 2s ease-in-out infinite;
+}
+.scan-line{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,transparent,rgba(0,255,102,0.5),transparent);
+  animation:scanDown 4s linear infinite;
+  pointer-events:none;
+}
+@keyframes glowPulse{
+  0%,100%{opacity:0.6;}
+  50%{opacity:1;}
+}
+@keyframes glowVolPulse{
+  0%,100%{opacity:0.5;}
+  50%{opacity:1;}
+}
+@keyframes scanDown{
+  0%{top:0;opacity:0.8;}
+  90%{opacity:0.8;}
+  100%{top:100%;opacity:0;}
+}
 
 /* REAL TICKER BADGES */
 .rt-badge{
@@ -599,9 +659,9 @@ footer{
 .footer-links a:hover{color:var(--text);}
 
 @media(max-width:1024px){
-  .hero{grid-template-columns:1fr;min-height:auto;padding-top:80px;}
-  .hero-left{padding:40px 24px;max-width:100%;}
-  .hero-right{padding:20px 24px 40px;justify-content:center;}
+  .hero{grid-template-columns:1fr;min-height:auto;padding:80px 24px 40px;gap:40px;}
+  .hero-left{max-width:100%;}
+  .hero-right{justify-content:center;}
   .dm-window{max-width:100%;}
   .section{padding:60px 24px;}
   .steps-row,.levels-row{grid-template-columns:repeat(2,1fr);}
@@ -694,85 +754,27 @@ footer{
     <div style="width:100%;max-width:760px">
       <div class="dm-window">
 
-        <!-- REAL ASSET TICKER BAR -->
-        <div style="background:#080A0F;border-bottom:1px solid rgba(255,255,255,0.05);padding:6px 10px;display:flex;gap:8px;flex-wrap:nowrap;overflow:hidden;">
-          <div class="rt-badge" style="border-color:rgba(247,147,26,0.5)">
-            <span style="color:#F7931A;font-weight:800">● BTC</span>
-            <span class="rt-pct dn" id="t1">-1.16%</span>
-            <span class="rt-meta">Vol: 5.15B &nbsp;<b id="tp1" style="color:#fff">59420.3</b></span>
-          </div>
-          <div class="rt-badge" style="border-color:rgba(98,126,234,0.5)">
-            <span style="color:#627EEA;font-weight:800">● ETH</span>
-            <span class="rt-pct dn" id="t2">-0.89%</span>
-            <span class="rt-meta">Vol: 3.61B &nbsp;<b id="tp2" style="color:#fff">1563.05</b></span>
-          </div>
-          <div class="rt-badge" style="border-color:rgba(0,170,228,0.5)">
-            <span style="color:#00AAE4;font-weight:800">✕ XRP</span>
-            <span class="rt-pct dn" id="t3">-1.01%</span>
-            <span class="rt-meta">Vol: 274M &nbsp;<b id="tp3" style="color:#fff">1.0431</b></span>
-          </div>
-          <div class="rt-badge" style="border-color:rgba(190,190,190,0.4)">
-            <span style="color:#C0C0C0;font-weight:800">◎ LTC</span>
-            <span class="rt-pct up" id="t4">+0.43%</span>
-            <span class="rt-meta">Vol: 43.1M &nbsp;<b id="tp4" style="color:#fff">42.47</b></span>
-          </div>
-          <div class="rt-badge" style="border-color:rgba(0,255,102,0.35)">
-            <span style="color:#00FF66;font-weight:800">◆ HYPE</span>
-            <span class="rt-pct dn" id="t5">-0.43%</span>
-            <span class="rt-meta">Vol: 465M &nbsp;<b id="tp5" style="color:#fff">61.97</b></span>
-          </div>
+        <!-- CHART BODY — imagen real + glows encima -->
+        <div style="position:relative;overflow:hidden;">
+          <!-- IMAGEN REAL DEL DELTA MATRIX -->
+          <img src="delta-matrix.png.jpg" alt="Delta Matrix" style="width:100%;display:block;border-radius:12px;">
+
+          <!-- GLOW OVERLAY — bandas de heatmap superiores (100x zone) -->
+          <div class="glow-band-top"></div>
+
+          <!-- GLOW OVERLAY — bandas de heatmap inferiores (50x zone) -->
+          <div class="glow-band-bot"></div>
+
+          <!-- GLOW OVERLAY — perfil de volumen derecho -->
+          <div class="glow-vol-right"></div>
+
+          <!-- SCAN LINE — efecto pantalla viva -->
+          <div class="scan-line"></div>
+
+          <!-- ALERT FEED encima de la imagen -->
+          <div class="alert-feed" id="alertFeed"></div>
         </div>
 
-        <!-- CHART BODY -->
-        <div style="display:flex;height:430px;position:relative;">
-          <!-- LEFT TOOL STRIP -->
-          <div style="width:36px;background:#0A0D14;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:9px;flex-shrink:0;">
-            <div class="dm-tool">↕</div>
-            <div class="dm-tool" style="color:var(--green);background:rgba(0,255,102,0.1)">⊹</div>
-            <div style="width:14px;height:1px;background:rgba(255,255,255,0.07)"></div>
-            <div class="dm-tool">⊘</div>
-            <div class="dm-tool">╱</div>
-            <div class="dm-tool">◫</div>
-            <div class="dm-tool">✎</div>
-            <div style="width:14px;height:1px;background:rgba(255,255,255,0.07)"></div>
-            <div class="dm-tool">📌</div>
-            <div class="dm-tool" style="margin-top:auto">👁</div>
-            <div class="dm-tool">🔒</div>
-          </div>
-
-          <!-- MAIN CHART -->
-          <div style="flex:1;position:relative;overflow:hidden;background:#080A0F;">
-            <canvas id="chartCanvas" style="position:absolute;inset:0;width:100%!important;height:100%!important"></canvas>
-            <!-- APALANCAMIENTO LEGEND -->
-            <div style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.07);border-radius:4px;padding:4px 10px;font-size:9px;font-family:'JetBrains Mono',monospace;display:flex;gap:10px;align-items:center;z-index:5;">
-              <span style="color:#666">APALANCAMIENTO</span>
-              <span><span style="color:#00FF66">●</span> 100x</span>
-              <span><span style="color:#00BBFF">●</span> 50x</span>
-              <span style="color:#5599FF">● 25x</span>
-            </div>
-            <!-- ALERT FEED -->
-            <div class="alert-feed" id="alertFeed"></div>
-          </div>
-
-          <!-- RIGHT VOLUME PROFILE -->
-          <div style="width:115px;background:#080A0F;border-left:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;">
-            <canvas id="volProfileCanvas" style="position:absolute;inset:0;width:100%!important;height:100%!important"></canvas>
-          </div>
-        </div>
-
-        <!-- BOTTOM TOOLBAR -->
-        <div class="dm-bottom">
-          <div class="dm-tabs">
-            <div class="dm-tab active">🤖 IA CVD</div>
-            <div class="dm-tab">📚 DOM</div>
-            <div class="dm-tab">🔢 DELTAS</div>
-            <div class="dm-tab">🔥 HEATMAP LIQ</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <div class="dm-live-badge"><div class="live-pulse" style="width:5px;height:5px"></div>EN VIVO</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#fff;font-weight:700" id="priceDisplay">$59,420</div>
-          </div>
-        </div>
       </div><!-- /dm-window -->
 
       <!-- FEATURE PILLS -->
