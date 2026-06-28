@@ -355,32 +355,100 @@ nav{
   width:5px;height:5px;border-radius:50%;background:#00FF66;
   animation:blink 1s ease-in-out infinite;
 }
-/* Footprint rows */
+/* ===== ATAS FOOTPRINT CANDLE ===== */
+.fp-totals{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:5px;padding-bottom:5px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  font-size:9px;font-weight:700;
+}
+.fp-tot-buy{ color:#00FF66; }
+.fp-tot-sell{ color:#FF4560; }
+.fp-tot-delta{ color:rgba(255,255,255,0.5);font-size:8px; }
+/* Each price level row */
 .fp-row{
   display:grid;
-  grid-template-columns:54px 52px 52px;
-  gap:1px;
-  padding:2px 0;
-  border-radius:3px;
-  transition:background 0.2s;
+  grid-template-columns:42px 6px 42px 36px;
+  gap:0;
+  align-items:center;
+  padding:1px 0;
+  position:relative;
 }
-.fp-row.poc{
-  background:rgba(0,255,102,0.1);
-  border:1px solid rgba(0,255,102,0.2);
-  border-radius:3px;
+/* candle body marker */
+.fp-candle-mark{
+  width:4px;height:100%;
+  background:rgba(255,255,255,0.06);
+  position:relative;
 }
-.fp-price{ color:rgba(255,255,255,0.55); font-size:9px; }
-.fp-bid{ color:#00FF66; font-size:9px; text-align:right; font-weight:600; }
-.fp-ask{ color:#FF4560; font-size:9px; text-align:right; font-weight:600; }
+.fp-candle-mark.body{background:rgba(0,255,102,0.25);}
+.fp-candle-mark.body-bear{background:rgba(255,69,96,0.25);}
+/* bid cell — left, sellers */
+.fp-bid-cell{
+  font-size:9px;font-weight:600;
+  text-align:right;padding-right:4px;
+  color:rgba(255,255,255,0.45);
+  border-radius:2px 0 0 2px;
+  position:relative;overflow:hidden;
+  line-height:16px;height:16px;
+}
+.fp-bid-cell .vol-bar{
+  position:absolute;right:0;top:0;bottom:0;
+  background:rgba(255,69,96,0.18);
+  border-left:1px solid rgba(255,69,96,0.3);
+  transition:width 0.4s;
+}
+.fp-bid-cell span{position:relative;z-index:1;}
+/* ask cell — right, buyers */
+.fp-ask-cell{
+  font-size:9px;font-weight:600;
+  text-align:left;padding-left:4px;
+  color:rgba(255,255,255,0.45);
+  border-radius:0 2px 2px 0;
+  position:relative;overflow:hidden;
+  line-height:16px;height:16px;
+}
+.fp-ask-cell .vol-bar{
+  position:absolute;left:0;top:0;bottom:0;
+  background:rgba(0,255,102,0.18);
+  border-right:1px solid rgba(0,255,102,0.3);
+  transition:width 0.4s;
+}
+.fp-ask-cell span{position:relative;z-index:1;}
+/* delta */
+.fp-delta{font-size:8px;text-align:right;padding-left:2px;}
+/* POC row */
+.fp-row.poc .fp-bid-cell{color:#FF4560;background:rgba(255,69,96,0.06);}
+.fp-row.poc .fp-ask-cell{color:#00FF66;background:rgba(0,255,102,0.06);}
+.fp-row.poc .fp-candle-mark{background:rgba(0,255,102,0.5);box-shadow:0 0 4px rgba(0,255,102,0.6);}
+.fp-row.poc::after{
+  content:'POC';position:absolute;right:-26px;
+  font-size:7px;color:rgba(0,255,102,0.7);letter-spacing:0.5px;
+}
+/* Imbalance — buy side dominates */
+.fp-row.imb-buy .fp-ask-cell{color:#00FF66 !important;background:rgba(0,255,102,0.12) !important;}
+.fp-row.imb-buy .fp-ask-cell .vol-bar{background:rgba(0,255,102,0.3);}
+/* Imbalance — sell side dominates */
+.fp-row.imb-sell .fp-bid-cell{color:#FF4560 !important;background:rgba(255,69,96,0.12) !important;}
+.fp-row.imb-sell .fp-bid-cell .vol-bar{background:rgba(255,69,96,0.3);}
+/* header */
 .fp-head{
   display:grid;
-  grid-template-columns:54px 52px 52px;
-  gap:1px;
-  margin-bottom:4px;
-  color:rgba(255,255,255,0.25);
-  font-size:8px;
-  letter-spacing:0.5px;
+  grid-template-columns:42px 6px 42px 36px;
+  gap:0;margin-bottom:3px;
+  color:rgba(255,255,255,0.2);
+  font-size:7.5px;letter-spacing:0.5px;
 }
+.fp-net-delta{
+  margin-top:5px;padding-top:4px;
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:8.5px;
+}
+.fp-close-price{
+  color:rgba(255,255,255,0.6);font-size:8px;
+  display:flex;align-items:center;gap:4px;margin-bottom:4px;
+}
+.fp-close-price b{color:#fff;font-size:10px;}
 /* CVD bar */
 .cvd-bar-wrap{
   display:flex;gap:4px;align-items:center;margin:4px 0;
@@ -862,11 +930,31 @@ footer{
     <div style="width:90%;padding:20px 0 20px 0;">
       <div class="dm-window">
 
-        <!-- CORNER WIDGET: FOOTPRINT — top-left -->
+        <!-- CORNER WIDGET: FOOTPRINT ATAS — top-left -->
         <div class="cw cw-footprint">
-          <div class="cw-title"><span class="live-dot"></span>FOOTPRINT · BTC</div>
-          <div class="fp-head"><span>PRECIO</span><span style="text-align:right">BID</span><span style="text-align:right">ASK</span></div>
+          <div class="cw-title"><span class="live-dot"></span>FOOTPRINT · BTC/USDT · 15M</div>
+          <!-- Totales de la vela -->
+          <div class="fp-totals">
+            <span class="fp-tot-buy" id="fpTotBuy">▲ 248.6K</span>
+            <span class="fp-tot-delta" id="fpTotDelta">Δ +115</span>
+            <span class="fp-tot-sell" id="fpTotSell">▼ 133.5K</span>
+          </div>
+          <!-- Precio de cierre -->
+          <div class="fp-close-price">CLOSE <b id="fpClose">$59,900</b></div>
+          <!-- Header columnas -->
+          <div class="fp-head">
+            <span style="text-align:right;padding-right:4px">BID</span>
+            <span></span>
+            <span style="padding-left:4px">ASK</span>
+            <span style="text-align:right">Δ</span>
+          </div>
+          <!-- Filas de niveles de precio -->
           <div id="fpRows"></div>
+          <!-- Delta neto de la vela -->
+          <div class="fp-net-delta">
+            <span style="color:rgba(255,255,255,0.3);font-size:8px">DELTA VELA</span>
+            <span id="fpNetDelta" style="color:#00FF66;font-weight:700">+115</span>
+          </div>
         </div>
 
         <!-- IMAGE WRAP con glows -->
@@ -1774,44 +1862,113 @@ function showMsg(el,text,type){
 document.getElementById('heroUid').addEventListener('keydown',e=>{if(e.key==='Enter')loginWithUID();});
 document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-// ===== FOOTPRINT WIDGET =====
+// ===== ATAS FOOTPRINT CANDLE WIDGET =====
 (function(){
-  const basePrice = 59860;
-  const step = 20;
-  const rows = 7;
-  const pocRow = 3; // POC index (la más activa)
+  const LEVELS = 12;
+  const STEP   = 20;           // $20 por nivel
+  let   closePrice = 59900;
+  let   pocIdx  = 5;           // nivel con mayor volumen
 
-  function rndVol(base, spread){
-    return Math.max(0, base + (Math.random()-0.5)*spread);
+  function rnd(base, pct){ return Math.max(1, base * (1 + (Math.random()-0.5)*pct)); }
+  function fmtV(v){
+    if(v >= 1000) return (v/1000).toFixed(1)+'K';
+    return Math.round(v).toString();
   }
-  function fmt(v){
-    if(v===0) return '-';
-    if(v>=1000) return (v/1000).toFixed(1)+'K';
-    return v.toFixed(0);
-  }
+  function fmtK(v){ return (v/1000).toFixed(1)+'K'; }
+
   function renderFP(){
     const el = document.getElementById('fpRows');
     if(!el) return;
-    const currentPOC = pocRow + Math.floor(Math.random()*1.5);
+
+    // Deriva ligeramente el precio de cierre para simular movimiento
+    closePrice += (Math.random()-0.5)*10;
+    const baseHigh = closePrice + STEP * Math.ceil(LEVELS * 0.6);
+    const baseLow  = closePrice - STEP * Math.ceil(LEVELS * 0.4);
+
+    // Desplaza el POC aleatoriamente ±1 niveles cada ciclo
+    pocIdx = Math.max(1, Math.min(LEVELS-2, pocIdx + (Math.random()<0.3 ? (Math.random()<0.5?1:-1) : 0)));
+
+    // Cuerpo de la vela: niveles 3..8 aprox (zona cercana al close)
+    const bodyStart = Math.floor(LEVELS*0.25);
+    const bodyEnd   = Math.floor(LEVELS*0.75);
+
+    let totalBid=0, totalAsk=0;
+    const levels = [];
+
+    for(let i=0; i<LEVELS; i++){
+      const price = Math.round(baseHigh - i*STEP);
+      const distPOC = Math.abs(i - pocIdx);
+      const volBase = 30000 * Math.exp(-distPOC * 0.35);
+
+      const bid = rnd(volBase * 0.55, 0.5);
+      const ask = rnd(volBase * 0.45, 0.5);
+      const delta = ask - bid;
+
+      totalBid += bid;
+      totalAsk += ask;
+
+      // Imbalance: un lado > 3x el otro
+      let imb = '';
+      if(ask > bid * 3) imb = 'imb-buy';
+      else if(bid > ask * 3) imb = 'imb-sell';
+
+      const isPOC = (i === pocIdx);
+      // ¿está dentro del cuerpo de la vela?
+      const inBody = (i >= bodyStart && i <= bodyEnd);
+
+      levels.push({ price, bid, ask, delta, isPOC, inBody, imb });
+    }
+
+    const maxVol = Math.max(...levels.map(l => Math.max(l.bid, l.ask)));
+
     let html = '';
-    for(let i=0;i<rows;i++){
-      const price = basePrice + (rows-1-i)*step + Math.floor(Math.random()*4-2)*step;
-      const isPOC = i===currentPOC;
-      const bidBase = isPOC ? 28000 : [4200,8100,2300,1800,5600,3300,9100][i]||3000;
-      const askBase = isPOC ? 12000 : [1100,5800,3700,6200,900,4400,2100][i]||2000;
-      const bid = rndVol(bidBase, bidBase*0.3);
-      const ask = rndVol(askBase, askBase*0.3);
-      const isPocClass = isPOC ? ' poc' : '';
-      html += `<div class="fp-row${isPocClass}">
-        <span class="fp-price">$${(price).toLocaleString()}</span>
-        <span class="fp-bid">${fmt(bid)}</span>
-        <span class="fp-ask">${fmt(ask)}</span>
+    for(const l of levels){
+      const cls = [
+        'fp-row',
+        l.isPOC ? 'poc' : '',
+        l.imb
+      ].filter(Boolean).join(' ');
+
+      const bidPct = Math.round((l.bid/maxVol)*100);
+      const askPct = Math.round((l.ask/maxVol)*100);
+
+      const markClass = l.inBody ? (l.ask>=l.bid?'body':'body-bear') : '';
+      const deltaColor = l.delta>=0 ? '#00FF66' : '#FF4560';
+      const deltaSign  = l.delta>=0 ? '+' : '';
+
+      html += `<div class="${cls}">
+        <div class="fp-bid-cell">
+          <div class="vol-bar" style="width:${bidPct}%"></div>
+          <span>${fmtV(l.bid)}</span>
+        </div>
+        <div class="fp-candle-mark ${markClass}"></div>
+        <div class="fp-ask-cell">
+          <div class="vol-bar" style="width:${askPct}%"></div>
+          <span>${fmtV(l.ask)}</span>
+        </div>
+        <div class="fp-delta" style="color:${deltaColor}">${deltaSign}${fmtV(Math.abs(l.delta))}</div>
       </div>`;
     }
     el.innerHTML = html;
+
+    const netDelta = totalAsk - totalBid;
+    const ndEl = document.getElementById('fpNetDelta');
+    if(ndEl){
+      ndEl.textContent = (netDelta>=0?'+':'')+fmtK(netDelta);
+      ndEl.style.color = netDelta>=0 ? '#00FF66' : '#FF4560';
+    }
+    const buyEl = document.getElementById('fpTotBuy');
+    const sellEl = document.getElementById('fpTotSell');
+    const dEl = document.getElementById('fpTotDelta');
+    const cEl = document.getElementById('fpClose');
+    if(buyEl) buyEl.textContent = '▲ '+fmtK(totalAsk);
+    if(sellEl) sellEl.textContent = '▼ '+fmtK(totalBid);
+    if(dEl){ dEl.textContent='Δ '+(netDelta>=0?'+':'')+fmtK(netDelta); dEl.style.color=netDelta>=0?'#00FF66':'#FF4560'; }
+    if(cEl) cEl.textContent = '$'+Math.round(closePrice).toLocaleString();
   }
+
   renderFP();
-  setInterval(renderFP, 900);
+  setInterval(renderFP, 1000);
 })();
 
 // ===== CVD WIDGET =====
