@@ -286,16 +286,34 @@ nav{
   border-radius:16px;
   overflow:visible;
   position:relative;
-  animation:dmFloat 6s ease-in-out infinite;
 }
 .dm-img-wrap{
   position:relative;
   border-radius:16px;
   overflow:hidden;
   box-shadow:
-    0 0 0 1px rgba(0,255,102,0.14),
-    0 32px 80px rgba(0,0,0,0.85),
-    0 0 100px rgba(0,255,102,0.06);
+    0 0 0 1px rgba(0,255,102,0.22),
+    0 0 0 2px rgba(0,255,102,0.06),
+    0 24px 60px rgba(0,0,0,0.8),
+    0 0 60px rgba(0,255,102,0.07);
+  animation: borderPulse 4s ease-in-out infinite;
+}
+@keyframes borderPulse{
+  0%,100%{
+    box-shadow:
+      0 0 0 1px rgba(0,255,102,0.22),
+      0 0 0 2px rgba(0,255,102,0.06),
+      0 24px 60px rgba(0,0,0,0.8),
+      0 0 50px rgba(0,255,102,0.07);
+  }
+  50%{
+    box-shadow:
+      0 0 0 1px rgba(0,255,102,0.45),
+      0 0 0 3px rgba(0,255,102,0.10),
+      0 24px 60px rgba(0,0,0,0.8),
+      0 0 80px rgba(0,255,102,0.14),
+      0 0 120px rgba(0,255,102,0.05);
+  }
 }
 .dm-img-wrap img{
   width:100%;
@@ -1037,12 +1055,6 @@ footer{
           <div class="scan-line"></div>
           <!-- ALERTAS IA LONG/SHORT animadas -->
           <div class="ia-alerts" id="iaAlerts"></div>
-          <!-- DOM OVERLAY derecho: libro de órdenes vivo -->
-          <div class="dom-overlay">
-            <div class="dom-ask-side" id="domAsks"></div>
-            <div class="dom-mid-price" id="domMidPrice">$59,900</div>
-            <div class="dom-bid-side" id="domBids"></div>
-          </div>
         </div>
 
       </div><!-- /dm-window -->
@@ -1922,105 +1934,6 @@ function showMsg(el,text,type){
 document.getElementById('heroUid').addEventListener('keydown',e=>{if(e.key==='Enter')loginWithUID();});
 document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-// ===== DOM OVERLAY ANIMATION =====
-(function(){
-  const ASK_ROWS = 32;  // más filas para llenar el espacio
-  const BID_ROWS = 19;
-  let price = 59900;
-
-  // Genera un perfil irregular real de DOM:
-  // - mayoría de barras entre 15-60%
-  // - algunos "muros" al 85-100% en posiciones aleatorias
-  // - nunca vacíos (mínimo 8%)
-  function genProfile(rows, wallProb){
-    const profile = [];
-    // Decide posiciones de muros
-    const numWalls = Math.floor(rows * wallProb);
-    const wallIdxs = new Set();
-    while(wallIdxs.size < numWalls) wallIdxs.add(Math.floor(Math.random()*rows));
-
-    for(let i=0; i<rows; i++){
-      if(wallIdxs.has(i)){
-        // Muro: 80-100%
-        profile.push({ w: 80 + Math.random()*20, wall:true });
-      } else {
-        // Normal: distribución irregular 8-65%
-        const r = Math.random();
-        let w;
-        if(r < 0.3)       w = 8  + Math.random()*15;   // pequeño
-        else if(r < 0.7)  w = 23 + Math.random()*25;   // mediano
-        else               w = 48 + Math.random()*17;   // grande
-        profile.push({ w, wall:false });
-      }
-    }
-    return profile;
-  }
-
-  let askProfile = genProfile(ASK_ROWS, 0.18);
-  let bidProfile = genProfile(BID_ROWS, 0.20);
-
-  function buildBars(container, profile, type){
-    container.innerHTML = '';
-    profile.forEach(p => {
-      const bar = document.createElement('div');
-      const wallClass = p.wall ? ` wall-${type}` : '';
-      bar.className = `dom-bar ${type}${wallClass}`;
-      bar.style.width = p.w.toFixed(1)+'%';
-      container.appendChild(bar);
-    });
-  }
-
-  function updateDOM(){
-    price += (Math.random()-0.49)*6;
-    const mid = document.getElementById('domMidPrice');
-    if(mid) mid.textContent = '$'+Math.round(price).toLocaleString();
-
-    // Cambia 4-6 barras aleatorias por ciclo para movimiento orgánico
-    const asks = document.getElementById('domAsks');
-    const bids = document.getElementById('domBids');
-    if(!asks||!bids) return;
-
-    const askBars = asks.querySelectorAll('.dom-bar');
-    const bidBars = bids.querySelectorAll('.dom-bar');
-    if(!askBars.length || !bidBars.length) return;
-
-    const n = 5;
-    for(let k=0; k<n; k++){
-      const ai = Math.floor(Math.random()*ASK_ROWS);
-      // regenera ese nivel
-      const p = askProfile[ai];
-      const isWall = Math.random() < 0.18;
-      p.wall = isWall;
-      p.w = isWall ? 80+Math.random()*20 : (Math.random()<0.5 ? 8+Math.random()*25 : 30+Math.random()*30);
-      if(askBars[ai]){
-        askBars[ai].style.width = p.w.toFixed(1)+'%';
-        askBars[ai].className = `dom-bar ask${p.wall?' wall-ask':''}`;
-      }
-    }
-    for(let k=0; k<n; k++){
-      const bi = Math.floor(Math.random()*BID_ROWS);
-      const p = bidProfile[bi];
-      const isWall = Math.random() < 0.20;
-      p.wall = isWall;
-      p.w = isWall ? 82+Math.random()*18 : (Math.random()<0.5 ? 8+Math.random()*25 : 30+Math.random()*30);
-      if(bidBars[bi]){
-        bidBars[bi].style.width = p.w.toFixed(1)+'%';
-        bidBars[bi].className = `dom-bar bid${p.wall?' wall-bid':''}`;
-      }
-    }
-  }
-
-  setTimeout(()=>{
-    const asks = document.getElementById('domAsks');
-    const bids = document.getElementById('domBids');
-    if(asks && bids){
-      buildBars(asks, askProfile, 'ask');
-      buildBars(bids, bidProfile, 'bid');
-    }
-  }, 100);
-
-  setInterval(updateDOM, 260);
-})();
 
 // ===== IA LONG/SHORT ALERTS =====
 (function(){
