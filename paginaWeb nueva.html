@@ -513,36 +513,50 @@ nav{
   position:absolute;
   top:13%;right:0;bottom:9%;
   width:8.5%;
-  background:rgba(6,8,14,0.82);
+  background:rgba(6,8,14,0.88);
   display:flex;flex-direction:column;
   z-index:8;
   overflow:hidden;
-  border-left:1px solid rgba(0,255,102,0.08);
+  border-left:1px solid rgba(255,255,255,0.04);
 }
-.dom-ask-side,.dom-bid-side{
-  flex:1;display:flex;flex-direction:column;
-  justify-content:flex-end;gap:1.5px;
-  padding:3px 0;overflow:hidden;
+.dom-ask-side{
+  flex:0 0 62%;  /* asks ocupan 62% — precio en el tercio inferior */
+  display:flex;flex-direction:column;
+  justify-content:flex-end;
+  gap:0px;padding:2px 0 0 0;
+  overflow:hidden;
 }
-.dom-bid-side{ justify-content:flex-start; }
+.dom-bid-side{
+  flex:0 0 34%;
+  display:flex;flex-direction:column;
+  justify-content:flex-start;
+  gap:0px;padding:0 0 2px 0;
+  overflow:hidden;
+}
 .dom-bar{
-  height:5px;border-radius:2px 0 0 2px;
+  height:4px;
+  border-radius:2px 0 0 2px;
   margin-left:auto;
-  transition:width 0.35s ease;
-  min-width:2px;
+  transition:width 0.25s ease;
+  width:10%;  /* default, JS lo sobreescribe */
+  flex-shrink:0;
 }
-.dom-bar.ask{ background:linear-gradient(90deg,rgba(255,69,96,0.3),rgba(255,69,96,0.85)); }
-.dom-bar.bid{ background:linear-gradient(90deg,rgba(0,255,102,0.3),rgba(0,255,102,0.85)); }
-.dom-bar.ask.big{ box-shadow:0 0 4px rgba(255,69,96,0.5); }
-.dom-bar.bid.big{ box-shadow:0 0 4px rgba(0,255,102,0.5); }
+.dom-bar.ask{
+  background:linear-gradient(90deg,rgba(255,69,96,0.2),rgba(255,69,96,0.9));
+}
+.dom-bar.bid{
+  background:linear-gradient(90deg,rgba(0,255,102,0.2),rgba(0,255,102,0.9));
+}
+.dom-bar.wall-ask{ box-shadow:0 0 6px rgba(255,69,96,0.6); }
+.dom-bar.wall-bid{ box-shadow:0 0 6px rgba(0,255,102,0.6); }
 .dom-mid-price{
   font-family:'JetBrains Mono',monospace;
   font-size:8px;font-weight:700;color:#fff;
-  text-align:center;padding:3px 2px;
-  background:rgba(0,255,102,0.15);
-  border-top:1px solid rgba(0,255,102,0.3);
-  border-bottom:1px solid rgba(0,255,102,0.3);
-  letter-spacing:0.5px;
+  text-align:center;padding:2px 2px;
+  background:rgba(0,255,102,0.18);
+  border-top:1px solid rgba(0,255,102,0.4);
+  border-bottom:1px solid rgba(0,255,102,0.4);
+  letter-spacing:0.3px;
   flex-shrink:0;
 }
 
@@ -1917,71 +1931,102 @@ document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='E
 
 // ===== DOM OVERLAY ANIMATION =====
 (function(){
-  const ROWS = 14;
+  const ASK_ROWS = 22;  // más filas arriba (precio en tercio inferior)
+  const BID_ROWS = 12;
   let price = 59900;
 
-  function rndW(base, spread){
-    return Math.max(4, Math.min(100, base + (Math.random()-0.5)*spread));
+  // Genera un perfil irregular real de DOM:
+  // - mayoría de barras entre 15-60%
+  // - algunos "muros" al 85-100% en posiciones aleatorias
+  // - nunca vacíos (mínimo 8%)
+  function genProfile(rows, wallProb){
+    const profile = [];
+    // Decide posiciones de muros
+    const numWalls = Math.floor(rows * wallProb);
+    const wallIdxs = new Set();
+    while(wallIdxs.size < numWalls) wallIdxs.add(Math.floor(Math.random()*rows));
+
+    for(let i=0; i<rows; i++){
+      if(wallIdxs.has(i)){
+        // Muro: 80-100%
+        profile.push({ w: 80 + Math.random()*20, wall:true });
+      } else {
+        // Normal: distribución irregular 8-65%
+        const r = Math.random();
+        let w;
+        if(r < 0.3)       w = 8  + Math.random()*15;   // pequeño
+        else if(r < 0.7)  w = 23 + Math.random()*25;   // mediano
+        else               w = 48 + Math.random()*17;   // grande
+        profile.push({ w, wall:false });
+      }
+    }
+    return profile;
   }
 
-  function buildBars(container, type, rows){
+  let askProfile = genProfile(ASK_ROWS, 0.18);
+  let bidProfile = genProfile(BID_ROWS, 0.20);
+
+  function buildBars(container, profile, type){
     container.innerHTML = '';
-    // Genera tamaños de barras: más grandes cerca del precio (centro)
-    for(let i=0; i<rows; i++){
-      const distFromPrice = type==='ask' ? rows-1-i : i;
-      const base = 70 - distFromPrice * 4;
-      const w = rndW(base, 30);
-      const isBig = w > 75;
+    profile.forEach(p => {
       const bar = document.createElement('div');
-      bar.className = `dom-bar ${type}${isBig?' big':''}`;
-      bar.style.width = w+'%';
+      const wallClass = p.wall ? ` wall-${type}` : '';
+      bar.className = `dom-bar ${type}${wallClass}`;
+      bar.style.width = p.w.toFixed(1)+'%';
       container.appendChild(bar);
-    }
+    });
   }
 
   function updateDOM(){
+    price += (Math.random()-0.49)*6;
+    const mid = document.getElementById('domMidPrice');
+    if(mid) mid.textContent = '$'+Math.round(price).toLocaleString();
+
+    // Cambia 4-6 barras aleatorias por ciclo para movimiento orgánico
     const asks = document.getElementById('domAsks');
     const bids = document.getElementById('domBids');
-    const mid  = document.getElementById('domMidPrice');
     if(!asks||!bids) return;
 
-    // Mueve el precio ligeramente
-    price += (Math.random()-0.5)*8;
-
-    // Actualiza solo algunas barras (no todas a la vez para que se vea orgánico)
     const askBars = asks.querySelectorAll('.dom-bar');
     const bidBars = bids.querySelectorAll('.dom-bar');
+    if(!askBars.length || !bidBars.length) return;
 
-    if(askBars.length === 0 || bidBars.length === 0){
-      buildBars(asks, 'ask', ROWS);
-      buildBars(bids, 'bid', ROWS);
-    } else {
-      // Actualiza 3-5 barras aleatorias por ciclo
-      const toUpdate = 4;
-      for(let k=0; k<toUpdate; k++){
-        const ai = Math.floor(Math.random()*ROWS);
-        const bi = Math.floor(Math.random()*ROWS);
-        const distA = ROWS-1-ai;
-        const distB = bi;
-        askBars[ai].style.width = rndW(70-distA*4, 30)+'%';
-        bidBars[bi].style.width = rndW(70-distB*4, 30)+'%';
+    const n = 5;
+    for(let k=0; k<n; k++){
+      const ai = Math.floor(Math.random()*ASK_ROWS);
+      // regenera ese nivel
+      const p = askProfile[ai];
+      const isWall = Math.random() < 0.18;
+      p.wall = isWall;
+      p.w = isWall ? 80+Math.random()*20 : (Math.random()<0.5 ? 8+Math.random()*25 : 30+Math.random()*30);
+      if(askBars[ai]){
+        askBars[ai].style.width = p.w.toFixed(1)+'%';
+        askBars[ai].className = `dom-bar ask${p.wall?' wall-ask':''}`;
       }
     }
-
-    if(mid) mid.textContent = '$'+Math.round(price).toLocaleString();
+    for(let k=0; k<n; k++){
+      const bi = Math.floor(Math.random()*BID_ROWS);
+      const p = bidProfile[bi];
+      const isWall = Math.random() < 0.20;
+      p.wall = isWall;
+      p.w = isWall ? 82+Math.random()*18 : (Math.random()<0.5 ? 8+Math.random()*25 : 30+Math.random()*30);
+      if(bidBars[bi]){
+        bidBars[bi].style.width = p.w.toFixed(1)+'%';
+        bidBars[bi].className = `dom-bar bid${p.wall?' wall-bid':''}`;
+      }
+    }
   }
 
-  // Primer render
   setTimeout(()=>{
     const asks = document.getElementById('domAsks');
     const bids = document.getElementById('domBids');
     if(asks && bids){
-      buildBars(asks,'ask',ROWS);
-      buildBars(bids,'bid',ROWS);
+      buildBars(asks, askProfile, 'ask');
+      buildBars(bids, bidProfile, 'bid');
     }
   }, 100);
 
-  setInterval(updateDOM, 280);
+  setInterval(updateDOM, 260);
 })();
 
 // ===== IA LONG/SHORT ALERTS =====
