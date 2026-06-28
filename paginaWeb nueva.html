@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Matemática del Trading | Sistema VIP Bitunix</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060810;
+  --bg2:#0C0F1A;
+  --bg3:#111622;
+  --bg4:#161C2C;
+  --green:#00FF66;
+  --green2:#00CC52;
+  --gdim:rgba(0,255,102,0.08);
+  --gglow:rgba(0,255,102,0.25);
+  --gold:#F0C040;
+  --blue:#2D9CDB;
+  --red:#FF4560;
+  --purple:#8B5CF6;
+  --text:#F0F4FF;
+  --text2:#8892AA;
+  --text3:#3A4460;
+  --border:rgba(255,255,255,0.06);
+  --border2:rgba(255,255,255,0.11);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh;}
+canvas#stars{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.6;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:62px;padding:0 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(6,8,16,0.8);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  transition:background 0.3s;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:1.5px;line-height:1.25;color:var(--text);
+}
+.nav-logo-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,var(--green),#00AA44);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.nav-logo span{color:var(--green);}
+.nav-center{display:flex;gap:6px;}
+.nav-link{
+  padding:7px 14px;border-radius:7px;font-size:13px;color:var(--text2);
+  cursor:pointer;transition:0.15s;background:transparent;border:none;font-family:'Inter',sans-serif;
+}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,0.04);}
+.nav-right{display:flex;gap:10px;align-items:center;}
+.btn-login{
+  padding:8px 20px;border-radius:8px;font-size:13px;font-weight:600;
+  background:transparent;border:1px solid var(--border2);color:var(--text2);
+  cursor:pointer;transition:0.15s;font-family:'Inter',sans-serif;
+  display:flex;align-items:center;gap:6px;
+}
+.btn-login:hover{color:var(--text);border-color:var(--green);color:var(--green);}
+.btn-cta-nav{
+  padding:8px 22px;border-radius:8px;font-size:13px;font-weight:700;
+  background:var(--green);color:#000;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:0.15s;
+  box-shadow:0 0 16px rgba(0,255,102,0.3);
+}
+.btn-cta-nav:hover{background:#1aff75;box-shadow:0 0 28px rgba(0,255,102,0.5);}
+
+/* HERO SPLIT */
+.hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1.15fr;
+  align-items:center;gap:0;
+  padding:62px 0 0;
+  position:relative;z-index:1;
+  overflow:hidden;
+}
+
+/* HERO GLOW BG */
+.hero::before{
+  content:'';position:absolute;
+  top:10%;right:0;width:55%;height:80%;
+  background:radial-gradient(ellipse at 70% 50%,rgba(0,255,102,0.04) 0%,transparent 65%);
+  pointer-events:none;
+}
+
+/* LEFT */
+.hero-left{
+  padding:0 0 0 80px;
+  display:flex;flex-direction:column;
+  justify-content:center;
+  max-width:600px;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:5px 14px;border-radius:20px;
+  background:var(--gdim);border:1px solid rgba(0,255,102,0.18);
+  font-size:11px;font-weight:700;color:var(--green);
+  letter-spacing:1.2px;text-transform:uppercase;
+  margin-bottom:28px;width:fit-content;
+}
+.live-pulse{
+  width:7px;height:7px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:lp 1.6s ease-in-out infinite;
+}
+@keyframes lp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.7)}}
+
+.hero-h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(2rem,3.8vw,3.4rem);
+  font-weight:900;line-height:1.08;
+  letter-spacing:-0.5px;
+  margin-bottom:22px;
+}
+.hero-h1 .accent{
+  color:var(--green);
+  text-shadow:0 0 40px rgba(0,255,102,0.4),0 0 80px rgba(0,255,102,0.1);
+}
+.hero-h1 .dim{color:var(--text2);font-weight:500;}
+
+.hero-sub{
+  font-size:15px;font-weight:400;color:var(--text2);
+  line-height:1.75;max-width:480px;margin-bottom:36px;
+}
+.hero-sub strong{color:var(--text);font-weight:600;}
+
+/* ASSET TICKER */
+.ticker-row{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px;
+}
+.ticker-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:5px 10px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border);
+  font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;
+  transition:0.15s;cursor:default;
+}
+.ticker-chip:hover{border-color:var(--border2);}
+.ticker-dot{width:5px;height:5px;border-radius:50%;}
+
+/* HERO ACTIONS */
+.hero-actions{display:flex;gap:12px;margin-bottom:36px;flex-wrap:wrap;}
+.btn-hero-main{
+  padding:14px 30px;border-radius:10px;font-size:15px;font-weight:800;
+  background:var(--green);color:#000;border:none;cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 0 28px var(--gglow);
+  transition:all 0.2s;font-family:'Inter',sans-serif;
+  letter-spacing:0.2px;
+}
+.btn-hero-main:hover{background:#1aff75;transform:translateY(-2px);box-shadow:0 6px 36px rgba(0,255,102,0.5);}
+.btn-hero-ghost{
+  padding:14px 24px;border-radius:10px;font-size:14px;font-weight:600;
+  background:transparent;color:var(--text);border:1px solid var(--border2);
+  cursor:pointer;display:flex;align-items:center;gap:8px;
+  transition:all 0.2s;font-family:'Inter',sans-serif;
+}
+.btn-hero-ghost:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.03);}
+
+/* QUICK LOGIN */
+.quick-login{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:10px;
+  padding:14px 16px;max-width:400px;
+}
+.quick-login-label{
+  font-size:10px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;
+  display:flex;align-items:center;gap:7px;
+}
+.quick-login-label::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green);}
+.uid-row{display:flex;gap:8px;}
+.uid-field{
+  flex:1;padding:10px 14px;background:var(--bg4);border:1px solid var(--border);
+  color:var(--text);border-radius:7px;font-family:'JetBrains Mono',monospace;
+  font-size:14px;letter-spacing:0.5px;outline:none;transition:0.15s;
+}
+.uid-field::placeholder{font-family:'Inter',sans-serif;font-size:12px;color:var(--text3);letter-spacing:0;}
+.uid-field:focus{border-color:var(--green);}
+.uid-go{
+  padding:10px 16px;border-radius:7px;background:var(--green);color:#000;
+  border:none;cursor:pointer;font-weight:800;font-size:13px;
+  transition:0.15s;white-space:nowrap;
+}
+.uid-go:hover{background:#1aff75;}
+.uid-hint{font-size:10px;color:var(--text3);margin-top:7px;}
+#qlMsg{display:none;font-size:11px;margin-top:7px;padding:6px 10px;border-radius:5px;}
+
+/* LIVE SCROLLING TICKER */
+.live-ticker-wrap{
+  width:100%;max-width:500px;overflow:hidden;
+  background:var(--bg3);border:1px solid var(--border);border-radius:8px;
+  margin-bottom:28px;position:relative;
+}
+.live-ticker-wrap::before,.live-ticker-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:40px;z-index:2;pointer-events:none;
+}
+.live-ticker-wrap::before{left:0;background:linear-gradient(90deg,var(--bg3),transparent);}
+.live-ticker-wrap::after{right:0;background:linear-gradient(270deg,var(--bg3),transparent);}
+.live-ticker-track{
+  display:flex;gap:0;padding:8px 0;
+  animation:tickerScroll 40s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+.live-ticker-track:hover{animation-play-state:paused;}
+@keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.t-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:0 16px;border-right:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap;
+}
+.t-sym{font-weight:700;color:var(--text);}
+.t-price{color:var(--text2);}
+.t-pct{font-weight:600;font-size:11px;}
+
+/* PAY BUTTON */
+.btn-hero-pay{
+  padding:14px 24px;border-radius:10px;font-size:14px;font-weight:700;
+  background:transparent;color:var(--gold);border:1px solid var(--gold);
+  cursor:pointer;display:flex;align-items:center;gap:8px;
+  transition:all 0.2s;font-family:'Inter',sans-serif;
+  box-shadow:0 0 16px rgba(240,192,64,0.1);
+}
+.btn-hero-pay:hover{background:rgba(240,192,64,0.08);box-shadow:0 0 28px rgba(240,192,64,0.25);transform:translateY(-2px);}
+
+/* PAY MODAL PRO */
+.pay-modal{background:var(--bg2);border:1px solid rgba(240,192,64,0.2);border-radius:20px;padding:36px;width:100%;max-width:440px;position:relative;}
+.pay-modal::before{content:'';position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.pay-header{text-align:center;margin-bottom:28px;}
+.pay-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 14px;border-radius:20px;background:rgba(240,192,64,0.08);border:1px solid rgba(240,192,64,0.25);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.5px;margin-bottom:14px;}
+.pay-title{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px;}
+.pay-price{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;color:var(--gold);line-height:1;}
+.pay-period{font-size:12px;color:var(--text3);margin-top:4px;}
+.pay-includes{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0;}
+.pay-inc-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);}
+.pay-inc-item::before{content:'✓';color:var(--green);font-weight:700;font-size:11px;}
+.pay-divider{height:1px;background:var(--border);margin:20px 0;}
+.pay-qr-section{display:flex;gap:20px;align-items:center;margin-bottom:20px;}
+.pay-qr-box{flex-shrink:0;padding:10px;background:#fff;border-radius:12px;line-height:0;}
+.pay-qr-box img{width:110px;height:110px;border-radius:6px;}
+.pay-addr-section{flex:1;min-width:0;}
+.pay-net{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;}
+.pay-addr{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text2);word-break:break-all;line-height:1.5;background:var(--bg4);padding:8px;border-radius:6px;border:1px solid var(--border);}
+.pay-copy-btn{margin-top:8px;width:100%;padding:7px;border-radius:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);font-size:11px;cursor:pointer;transition:0.15s;font-weight:600;}
+.pay-copy-btn:hover{color:var(--text);border-color:var(--border2);}
+.pay-cta{width:100%;padding:14px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:800;font-family:'Inter',sans-serif;background:linear-gradient(135deg,var(--gold),#D4A010);color:#000;transition:0.2s;}
+.pay-cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(240,192,64,0.35);}
+.pay-security{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:11px;color:var(--text3);}
+
+.trust-strip{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:28px;}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);}
+.trust-item strong{color:var(--text2);}
+.trust-div{width:1px;height:16px;background:var(--border2);}
+
+/* RIGHT — DELTA MATRIX WINDOW */
+.hero-right{
+  position:relative;display:flex;align-items:center;justify-content:flex-end;
+  padding:80px 32px 40px 0;height:100%;min-height:calc(100vh - 62px);
+}
+
+/* ===== MAC FRAME ===== */
+.mac-outer{
+  width:100%;max-width:700px;
+  position:relative;
+  filter:drop-shadow(0 40px 90px rgba(0,0,0,0.75)) drop-shadow(0 0 80px rgba(0,255,102,0.09));
+  animation:macFloat 5s ease-in-out infinite;
+}
+@keyframes macFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+.mac-body{
+  background:linear-gradient(160deg,#DCDCDC 0%,#B8B8B8 45%,#A0A0A0 100%);
+  border-radius:18px 18px 6px 6px;
+  padding:13px 13px 0;
+  position:relative;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.45) inset,
+    0 0 0 1px rgba(0,0,0,0.35);
+}
+.mac-camera{
+  position:absolute;top:6px;left:50%;transform:translateX(-50%);
+  width:5px;height:5px;border-radius:50%;
+  background:radial-gradient(#6A6A6A,#444);
+  box-shadow:0 0 0 1.5px rgba(0,0,0,0.4);
+}
+.mac-screen-wrap{
+  background:#000;
+  border-radius:7px 7px 0 0;
+  overflow:hidden;
+  border:2px solid #1E1E1E;
+  position:relative;
+}
+/* green ambient glow behind screen */
+.mac-screen-wrap::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:10;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,255,102,0.06),transparent 60%);
+}
+.mac-chin-bar{
+  height:26px;
+  background:linear-gradient(180deg,#B0B0B0 0%,#C4C4C4 50%,#ADADAD 100%);
+  border-radius:0 0 6px 6px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.25);
+}
+/* Apple logo SVG inline */
+.mac-apple{width:13px;height:16px;opacity:0.35;}
+
+.dm-window{
+  width:100%;
+  background:var(--bg2);
+  position:relative;
+}
+.dm-window::before{
+  content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  z-index:5;
+}
+
+/* WINDOW CHROME */
+.dm-chrome{
+  background:var(--bg3);border-bottom:1px solid var(--border);
+  padding:10px 16px;display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+}
+.dm-dots{display:flex;gap:6px;}
+.dm-dot{width:10px;height:10px;border-radius:50%;}
+.dm-titlebar{
+  display:flex;align-items:center;gap:8px;flex:1;justify-content:center;
+  font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.5px;
+}
+.dm-live-badge{
+  display:flex;align-items:center;gap:5px;
+  padding:2px 8px;border-radius:4px;
+  background:rgba(0,255,102,0.1);border:1px solid rgba(0,255,102,0.25);
+  font-size:9px;font-weight:700;color:var(--green);letter-spacing:0.5px;
+}
+
+/* TICKER BAR */
+.dm-ticker{
+  background:var(--bg3);border-bottom:1px solid var(--border);
+  padding:6px 14px;display:flex;gap:16px;overflow:hidden;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+.dm-tick{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.dm-tick-sym{color:var(--text);font-weight:600;}
+.dm-tick-pct{font-weight:500;}
+.dm-tick-vol{color:var(--text3);font-size:10px;}
+.up{color:var(--green);}
+.dn{color:var(--red);}
+
+/* MAIN CHART AREA */
+.dm-body{
+  display:grid;grid-template-columns:1fr 260px;
+  height:360px;
+}
+
+/* CHART */
+.dm-chart{position:relative;background:var(--bg);overflow:hidden;border-right:1px solid var(--border);}
+canvas#chartCanvas{width:100%!important;height:100%!important;display:block;}
+
+/* DOOM + HEATMAP side */
+.dm-side{display:flex;flex-direction:column;height:100%;}
+
+/* DOOM */
+.doom-panel{flex:1;border-bottom:1px solid var(--border);overflow:hidden;position:relative;}
+.panel-lbl{
+  padding:7px 10px;font-size:9px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:0.8px;display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg3);border-bottom:1px solid var(--border);
+}
+.panel-lbl span{color:var(--green);font-size:9px;}
+.doom-rows{padding:4px 0;overflow:hidden;}
+.doom-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2px 10px;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;
+  transition:background 0.25s;
+}
+.doom-row.flash-ask{animation:flashAsk 0.35s ease;}
+.doom-row.flash-bid{animation:flashBid 0.35s ease;}
+@keyframes flashAsk{
+  0%{background:rgba(255,69,96,0.25);}
+  100%{background:transparent;}
+}
+@keyframes flashBid{
+  0%{background:rgba(0,255,102,0.2);}
+  100%{background:transparent;}
+}
+.doom-price{font-weight:600;min-width:54px;}
+.doom-bar-wrap{flex:1;height:10px;background:rgba(255,255,255,0.03);border-radius:2px;overflow:hidden;}
+.doom-bar{height:100%;border-radius:2px;transition:width 0.4s ease;}
+.doom-size{color:var(--text3);font-size:9px;min-width:32px;text-align:right;}
+.doom-spread{
+  text-align:center;padding:3px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  background:rgba(255,255,255,0.03);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  color:var(--text);
+}
+
+/* HEATMAP */
+.heat-panel{height:120px;overflow:hidden;position:relative;}
+.heat-grid{display:grid;grid-template-columns:repeat(20,1fr);height:calc(100% - 28px);}
+.heat-cell{transition:background 0.5s ease,box-shadow 0.5s ease;}
+.heat-cell.glow-hot{
+  box-shadow:0 0 6px 2px rgba(255,69,96,0.7),0 0 14px rgba(255,69,96,0.4);
+  animation:heatPulse 1.2s ease-in-out infinite alternate;
+}
+.heat-cell.glow-warm{
+  box-shadow:0 0 5px 1px rgba(139,92,246,0.6),0 0 10px rgba(139,92,246,0.3);
+}
+.heat-cell.glow-green{
+  box-shadow:0 0 6px 2px rgba(0,255,102,0.6),0 0 14px rgba(0,255,102,0.35);
+  animation:heatPulseGreen 1.4s ease-in-out infinite alternate;
+}
+@keyframes heatPulse{
+  from{box-shadow:0 0 6px 2px rgba(255,69,96,0.6),0 0 12px rgba(255,69,96,0.3);}
+  to{box-shadow:0 0 10px 4px rgba(255,69,96,0.9),0 0 22px rgba(255,69,96,0.5);}
+}
+@keyframes heatPulseGreen{
+  from{box-shadow:0 0 6px 2px rgba(0,255,102,0.5),0 0 12px rgba(0,255,102,0.3);}
+  to{box-shadow:0 0 10px 4px rgba(0,255,102,0.85),0 0 22px rgba(0,255,102,0.5);}
+}
+
+/* ALERTS OVERLAY on chart */
+.alert-feed{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:6px 8px;
+  display:flex;flex-direction:column;gap:3px;
+  pointer-events:none;
+}
+.alert-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:5px;
+  font-size:10px;font-weight:700;font-family:'JetBrains Mono',monospace;
+  width:fit-content;
+  animation:alertIn 0.4s ease;
+}
+@keyframes alertIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+.alert-long{background:rgba(0,255,102,0.15);border:1px solid rgba(0,255,102,0.35);color:var(--green);}
+.alert-short{background:rgba(255,69,96,0.15);border:1px solid rgba(255,69,96,0.3);color:var(--red);}
+.alert-info{background:rgba(45,156,219,0.12);border:1px solid rgba(45,156,219,0.25);color:var(--blue);}
+
+/* BOTTOM BAR */
+.dm-bottom{
+  padding:8px 14px;background:var(--bg3);border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.dm-tabs{display:flex;gap:4px;}
+.dm-tab{
+  padding:4px 10px;border-radius:5px;font-size:10px;font-weight:700;cursor:pointer;
+  color:var(--text3);border:1px solid transparent;transition:0.15s;
+  font-family:'JetBrains Mono',monospace;
+}
+.dm-tab.active{background:var(--gdim);border-color:rgba(0,255,102,0.2);color:var(--green);}
+.dm-stat{font-size:10px;color:var(--text2);font-family:'JetBrains Mono',monospace;}
+.dm-stat strong{color:var(--green);}
+.dm-ai-row{
+  font-size:9px;color:var(--text3);font-family:'JetBrains Mono',monospace;
+  display:flex;align-items:center;gap:6px;
+}
+.dm-ai-row::before{content:'🧠';font-size:10px;}
+
+/* FEATURE PILLS below window */
+.feat-pills{
+  display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end;
+}
+.feat-pill{
+  padding:5px 12px;border-radius:20px;font-size:10px;font-weight:700;
+  background:var(--bg3);border:1px solid var(--border);color:var(--text3);
+  display:flex;align-items:center;gap:5px;
+  letter-spacing:0.3px;
+}
+.feat-pill.hi{border-color:rgba(0,255,102,0.25);color:var(--green);background:var(--gdim);}
+
+/* SECTIONS */
+.section{padding:90px 80px;position:relative;z-index:1;}
+.section-lbl{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;}
+.section-h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:700;margin-bottom:16px;line-height:1.15;}
+.section-p{color:var(--text2);font-size:15px;line-height:1.75;max-width:580px;}
+
+/* TOOLS GRID */
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:48px;}
+.tool-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:22px;transition:all 0.2s;cursor:pointer;position:relative;overflow:hidden;
+}
+.tool-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,102,0.03),transparent);opacity:0;transition:0.2s;}
+.tool-card:hover{border-color:rgba(0,255,102,0.25);transform:translateY(-3px);}
+.tool-card:hover::before{opacity:1;}
+.tool-tag{display:inline-block;padding:3px 9px;border-radius:4px;font-size:9px;font-weight:800;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;}
+.tag-free{background:rgba(0,255,102,0.1);color:var(--green);border:1px solid rgba(0,255,102,0.2);}
+.tag-vip{background:rgba(240,192,64,0.1);color:var(--gold);border:1px solid rgba(240,192,64,0.25);}
+.tool-name{font-size:15px;font-weight:700;margin-bottom:6px;}
+.tool-desc{font-size:12px;color:var(--text2);line-height:1.6;}
+.tool-arr{font-size:11px;color:var(--green);margin-top:14px;font-weight:700;opacity:0.5;transition:0.15s;}
+.tool-card:hover .tool-arr{opacity:1;}
+
+/* STEPS */
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;}
+.step-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;position:relative;}
+.step-n{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--gdim);border:1px solid rgba(0,255,102,0.2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:var(--green);
+  margin-bottom:14px;
+}
+.step-t{font-size:13px;font-weight:700;margin-bottom:5px;}
+.step-d{font-size:11px;color:var(--text2);line-height:1.6;}
+
+/* LEVELS */
+.levels-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:48px;}
+.lv-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:18px 14px;text-align:center;
+  transition:0.2s;
+}
+.lv-card:hover{transform:translateY(-2px);}
+.lv-icon{font-size:22px;margin-bottom:8px;}
+.lv-name{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px;}
+.lv-vol{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2);margin-bottom:10px;}
+.lv-bar{height:3px;border-radius:2px;background:var(--border);}
+
+/* OVERLAYS */
+.overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(4,5,12,0.92);backdrop-filter:blur(14px);
+  display:none;justify-content:center;align-items:center;padding:20px;
+}
+.overlay.open{display:flex;}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:16px;
+  padding:36px;width:100%;max-width:450px;position:relative;
+  max-height:88vh;overflow-y:auto;
+}
+.modal-x{
+  position:absolute;top:14px;right:14px;width:30px;height:30px;
+  background:var(--bg3);border:none;border-radius:6px;color:var(--text2);
+  cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:0.15s;
+}
+.modal-x:hover{color:var(--text);background:var(--bg4);}
+.modal-title{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:700;text-align:center;margin-bottom:24px;}
+.m-label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;margin-top:14px;}
+.m-input{
+  width:100%;padding:12px 14px;background:var(--bg4);border:1px solid var(--border2);
+  color:var(--text);border-radius:8px;font-family:'JetBrains Mono',monospace;
+  font-size:14px;outline:none;transition:0.15s;
+}
+.m-input::placeholder{font-family:'Inter',sans-serif;font-size:13px;color:var(--text3);}
+.m-input:focus{border-color:var(--green);}
+.m-btn{
+  width:100%;padding:13px;border-radius:8px;border:none;cursor:pointer;
+  font-size:14px;font-weight:700;font-family:'Inter',sans-serif;transition:0.15s;margin-top:16px;
+}
+.m-btn-green{background:var(--green);color:#000;}
+.m-btn-green:hover{background:#1aff75;}
+.m-btn-green:disabled{opacity:0.5;cursor:not-allowed;}
+.m-btn-ghost{background:var(--bg3);color:var(--text2);border:1px solid var(--border2);margin-top:10px;}
+.m-btn-ghost:hover{color:var(--text);}
+.info-b{
+  background:rgba(255,255,255,0.02);border:1px solid var(--border);
+  border-radius:8px;padding:14px;margin-bottom:14px;
+  font-size:13px;color:var(--text2);line-height:1.6;
+}
+.info-b strong{color:var(--text);}
+#loginMsg,#regMsg{display:none;font-size:12px;margin-top:10px;padding:9px 12px;border-radius:7px;}
+.msg-ok{background:rgba(0,255,102,0.07);color:var(--green);border:1px solid rgba(0,255,102,0.2);}
+.msg-err{background:rgba(255,69,96,0.07);color:var(--red);border:1px solid rgba(255,69,96,0.2);}
+.msg-load{background:var(--gdim);color:var(--green);border:1px solid rgba(0,255,102,0.15);}
+
+/* STEPPER */
+.stp-nav{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:26px;}
+.stp-dot{
+  width:30px;height:30px;border-radius:50%;border:2px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  color:var(--text3);background:var(--bg3);transition:0.25s;flex-shrink:0;
+}
+.stp-dot.on{border-color:var(--green);color:var(--green);background:var(--bg);}
+.stp-dot.done{border-color:var(--green);background:var(--green);color:#000;}
+.stp-line{flex:1;height:2px;background:var(--border2);max-width:55px;transition:0.25s;}
+.stp-line.done{background:var(--green);}
+.stp-body{display:none;}
+.stp-body.on{display:block;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.bitunix-a{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:13px;border-radius:8px;text-decoration:none;
+  background:var(--green);color:#000;font-weight:800;font-size:14px;
+  margin-bottom:10px;transition:0.15s;
+}
+.bitunix-a:hover{background:#1aff75;}
+
+/* PAY QR */
+.qr-wrap{background:var(--bg3);padding:20px;border-radius:10px;text-align:center;margin:16px 0;}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--border);padding:28px 80px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:relative;z-index:1;flex-wrap:wrap;gap:14px;
+}
+.footer-logo{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--text3);}
+.footer-logo span{color:var(--green);}
+.footer-links{display:flex;gap:18px;}
+.footer-links a{font-size:12px;color:var(--text3);text-decoration:none;transition:0.15s;}
+.footer-links a:hover{color:var(--text);}
+
+@media(max-width:1024px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding-top:80px;}
+  .hero-left{padding:40px 24px;max-width:100%;}
+  .hero-right{padding:20px 24px 40px;justify-content:center;}
+  .dm-window{max-width:100%;}
+  .section{padding:60px 24px;}
+  .steps-row,.levels-row{grid-template-columns:repeat(2,1fr);}
+  footer{padding:24px;}
+}
+@media(max-width:600px){
+  nav{padding:0 16px;}
+  .nav-center{display:none;}
+  .steps-row,.levels-row{grid-template-columns:1fr;}
+  .hero-actions{flex-direction:column;}
+  .btn-hero-main,.btn-hero-ghost{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div>LA MATEMÁTICA<br>DEL <span>TRADING</span></div>
+  </div>
+  <div class="nav-center">
+    <button class="nav-link" onclick="document.getElementById('herramientas').scrollIntoView({behavior:'smooth'})">Herramientas</button>
+    <button class="nav-link" onclick="document.getElementById('como').scrollIntoView({behavior:'smooth'})">Cómo funciona</button>
+    <button class="nav-link" onclick="document.getElementById('niveles').scrollIntoView({behavior:'smooth'})">Niveles</button>
+  </div>
+  <div class="nav-right">
+    <button class="btn-login" onclick="openLogin()">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3"/></svg>
+      Ingresar
+    </button>
+    <button class="btn-cta-nav" onclick="openRegister()">Unirme gratis</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <!-- LEFT -->
+  <div class="hero-left">
+    <div class="hero-eyebrow"><div class="live-pulse"></div>Order Flow · En vivo</div>
+
+    <h1 class="hero-h1">
+      Opera con<br>
+      <span class="accent">visión</span><br>
+      <span class="dim">institucional</span>
+    </h1>
+
+    <p class="hero-sub">
+      Accede gratis al arsenal de herramientas que los traders de <strong>alto nivel</strong> usan a diario. Libro de órdenes, mapa de liquidez, delta, alertas IA — todo integrado. Solo necesitas operar en <strong>Bitunix</strong>.
+    </p>
+
+    <!-- LIVE SCROLLING TICKER -->
+    <div class="live-ticker-wrap">
+      <div class="live-ticker-track" id="tickerTrack"></div>
+    </div>
+
+    <div class="hero-actions">
+      <button class="btn-hero-main" onclick="openRegister()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        Acceder gratis ahora
+      </button>
+      <button class="btn-hero-pay" onclick="openPayModal()">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        VIP de Pago
+      </button>
+    </div>
+
+    <div class="quick-login">
+      <div class="quick-login-label">Ya soy miembro — ingresa aquí</div>
+      <div class="uid-row">
+        <input class="uid-field" id="heroUid" placeholder="Tu UID de Bitunix" maxlength="20">
+        <button class="uid-go" onclick="loginWithUID()">Entrar →</button>
+      </div>
+      <div id="qlMsg"></div>
+      <div class="uid-hint">Encuéntralo en tu perfil de Bitunix → Cuenta → UID</div>
+    </div>
+
+    <div class="trust-strip">
+      <div class="trust-item"><strong>+2,400</strong> traders activos</div>
+      <div class="trust-div"></div>
+      <div class="trust-item">Patrocinado por <strong style="color:var(--green)">Bitunix</strong></div>
+      <div class="trust-div"></div>
+      <div class="trust-item"><strong>100% gratis</strong></div>
+    </div>
+  </div>
+
+  <!-- RIGHT — ANIMATED DELTA MATRIX INSIDE MAC -->
+  <div class="hero-right">
+    <div style="width:100%;max-width:700px">
+    <div class="mac-outer">
+      <div class="mac-body">
+        <div class="mac-camera"></div>
+        <div class="mac-screen-wrap">
+      <div class="dm-window">
+
+        <!-- CHROME -->
+        <div class="dm-chrome">
+          <div class="dm-dots">
+            <div class="dm-dot" style="background:#FF5F57"></div>
+            <div class="dm-dot" style="background:#FEBC2E"></div>
+            <div class="dm-dot" style="background:#28C840"></div>
+          </div>
+          <div class="dm-titlebar">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--green)"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+            Delta Matrix v2 · BTC/USDT · 15M
+            <div class="dm-live-badge"><div class="live-pulse" style="width:5px;height:5px"></div>EN VIVO</div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text);font-weight:600" id="priceDisplay">$60,172</div>
+        </div>
+
+        <!-- TICKER -->
+        <div class="dm-ticker" id="tickerBar">
+          <div class="dm-tick"><span class="dm-tick-sym">BTC</span><span class="dm-tick-pct up" id="t1">+2.41%</span><span class="dm-tick-vol">Vol 4.84B</span></div>
+          <div class="dm-tick"><span class="dm-tick-sym">ETH</span><span class="dm-tick-pct dn" id="t2">-0.21%</span><span class="dm-tick-vol">Vol 4.08B</span></div>
+          <div class="dm-tick"><span class="dm-tick-sym">SOL</span><span class="dm-tick-pct dn" id="t3">-0.85%</span><span class="dm-tick-vol">Vol 313M</span></div>
+          <div class="dm-tick"><span class="dm-tick-sym">LTC</span><span class="dm-tick-pct up" id="t4">+1.27%</span><span class="dm-tick-vol">Vol 46M</span></div>
+          <div class="dm-tick"><span class="dm-tick-sym">HYPE</span><span class="dm-tick-pct dn" id="t5">-0.39%</span><span class="dm-tick-vol">Vol 478M</span></div>
+        </div>
+
+        <!-- BODY: CHART + DOOM + HEATMAP -->
+        <div class="dm-body">
+          <!-- CHART -->
+          <div class="dm-chart">
+            <canvas id="chartCanvas"></canvas>
+            <!-- ALERT FEED -->
+            <div class="alert-feed" id="alertFeed"></div>
+          </div>
+
+          <!-- SIDE: DOOM + HEAT -->
+          <div class="dm-side">
+            <!-- DOOM -->
+            <div class="doom-panel">
+              <div class="panel-lbl">📖 Libro de órdenes <span id="doomSpread">Spread $12</span></div>
+              <div class="doom-rows" id="doomRows"></div>
+            </div>
+            <!-- HEATMAP -->
+            <div class="heat-panel">
+              <div class="panel-lbl">🔥 Mapa de liquidez</div>
+              <div class="heat-grid" id="heatGrid"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTTOM BAR -->
+        <div class="dm-bottom">
+          <div class="dm-tabs">
+            <div class="dm-tab active">DOM</div>
+            <div class="dm-tab">CVD</div>
+            <div class="dm-tab">DELTA</div>
+            <div class="dm-tab">NEBULA</div>
+          </div>
+          <div class="dm-ai-row" id="aiRow">Mercado en acumulación · esperando inyección institucional</div>
+        </div>
+      </div>
+
+        </div><!-- /dm-window -->
+        </div><!-- /mac-screen-wrap -->
+      </div><!-- /mac-body -->
+      <div class="mac-chin-bar">
+        <svg class="mac-apple" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.17 12.36c-.28.63-.62 1.21-1.01 1.74-.53.75-1.05 1.27-1.56 1.56-.62.36-1.29.54-2.01.55-.51 0-1.13-.14-1.85-.43-.72-.29-1.39-.43-2-.43-.64 0-1.32.14-2.05.43-.73.29-1.32.44-1.78.46-.69.03-1.38-.16-2.07-.56-.55-.31-1.08-.85-1.6-1.6-.55-.8-1-1.73-1.34-2.79C-3.47 10.17-3.6 9-3.6 7.86c0-1.3.28-2.43.83-3.37.44-.74.99-1.33 1.66-1.77.67-.44 1.39-.67 2.17-.68.54 0 1.24.17 2.12.5.87.33 1.43.5 1.67.5.18 0 .8-.2 1.85-.59.99-.37 1.83-.52 2.52-.46 1.86.15 3.25.88 4.18 2.2-1.66 1-2.48 2.41-2.47 4.22.01 1.41.52 2.58 1.55 3.5.46.44.97.77 1.54.99-.12.36-.25.7-.4 1.02zM9.76 0c0 1.1-.4 2.13-1.2 3.08-.96 1.12-2.13 1.77-3.39 1.67-.02-.13-.02-.27-.02-.4 0-1.06.46-2.2 1.28-3.13C6.84.74 7.37.36 8.01.08 8.65-.2 9.26-.33 9.84-.34c.02.12.02.24.02.34h-.1z" fill="#444"/>
+        </svg>
+      </div>
+    </div><!-- /mac-outer -->
+
+      <!-- FEATURE PILLS -->
+      <div class="feat-pills">
+        <div class="feat-pill hi">📖 Libro en vivo</div>
+        <div class="feat-pill hi">🔥 Heatmap</div>
+        <div class="feat-pill hi">Δ CVD</div>
+        <div class="feat-pill hi">⚡ Alertas IA</div>
+        <div class="feat-pill">📌 Foto Pinc</div>
+        <div class="feat-pill">🧠 Análisis IA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HERRAMIENTAS -->
+<section class="section" id="herramientas" style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="section-lbl">Arsenal completo</div>
+  <div class="section-h2">Todas las herramientas</div>
+  <p class="section-p">Desde calculadoras de riesgo hasta análisis institucional avanzado. Herramientas de pago, disponibles gratis para ti por operar en Bitunix.</p>
+  <div class="tools-grid">
+    <div class="tool-card" onclick="window.open('https://riesgofijo.promocryptoking.workers.dev/','_blank')">
+      <div class="tool-tag tag-free">Libre</div>
+      <div class="tool-name">⚖️ Calculadora de Riesgo</div>
+      <div class="tool-desc">Calcula tu lotaje exacto para proteger el capital en cada operación.</div>
+      <div class="tool-arr">Abrir →</div>
+    </div>
+    <div class="tool-card" onclick="window.open('https://radarvolatilidadlite.promocryptoking.workers.dev/','_blank')">
+      <div class="tool-tag tag-free">Libre</div>
+      <div class="tool-name">📡 Radar de Volatilidad</div>
+      <div class="tool-desc">Escáner de mercado en tiempo real para detectar zonas de alta liquidez.</div>
+      <div class="tool-arr">Abrir →</div>
+    </div>
+    <div class="tool-card" onclick="openLogin()" style="border-color:rgba(240,192,64,0.2)">
+      <div class="tool-tag tag-vip">VIP</div>
+      <div class="tool-name" style="color:var(--gold)">💠 Delta Matrix</div>
+      <div class="tool-desc">Libro de órdenes en vivo, heatmap, delta, CVD, alertas IA. La herramienta estrella.</div>
+      <div class="tool-arr" style="color:var(--gold)">Ingresar al VIP →</div>
+    </div>
+    <div class="tool-card" onclick="openLogin()">
+      <div class="tool-tag tag-vip">VIP</div>
+      <div class="tool-name" style="color:var(--gold)">🤖 DCA Cuántico</div>
+      <div class="tool-desc">Calculadora de posiciones DCA con gestión matemática de entradas y salidas.</div>
+      <div class="tool-arr" style="color:var(--gold)">Ingresar →</div>
+    </div>
+    <div class="tool-card" onclick="openLogin()">
+      <div class="tool-tag tag-vip">VIP</div>
+      <div class="tool-name" style="color:var(--gold)">🧠 Recovery Pro</div>
+      <div class="tool-desc">Sistema de recuperación de capital con estrategia matemática paso a paso.</div>
+      <div class="tool-arr" style="color:var(--gold)">Ingresar →</div>
+    </div>
+    <div class="tool-card" onclick="openLogin()">
+      <div class="tool-tag tag-vip">VIP</div>
+      <div class="tool-name" style="color:var(--gold)">📓 Bitácora Pro</div>
+      <div class="tool-desc">Registro y análisis de operaciones con estadísticas avanzadas y coach IA mensual.</div>
+      <div class="tool-arr" style="color:var(--gold)">Ingresar →</div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="section" id="como">
+  <div class="section-lbl">Acceso en 3 pasos</div>
+  <div class="section-h2">¿Cómo ingresar?</div>
+  <p class="section-p">Sin mensualidades. Sin complicaciones. Tu capital opera, tú obtienes las herramientas.</p>
+  <div class="steps-row">
+    <div class="step-card">
+      <div class="step-n">01</div>
+      <div class="step-t">Crea tu cuenta en Bitunix</div>
+      <div class="step-d">Regístrate con nuestro enlace oficial. Necesitas una cuenta nueva bajo nuestro referido.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-n">02</div>
+      <div class="step-t">Deposita mínimo 100 USDT</div>
+      <div class="step-d">Capital 100% tuyo para operar. No es una membresía, es tu capital de trabajo.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-n">03</div>
+      <div class="step-t">Valida tu UID</div>
+      <div class="step-d">Ingresa tu UID de Bitunix aquí. Verificación automática, acceso inmediato.</div>
+    </div>
+    <div class="step-card" style="border-color:rgba(0,255,102,0.2);background:rgba(0,255,102,0.02)">
+      <div class="step-n" style="background:rgba(0,255,102,0.12);border-color:rgba(0,255,102,0.35)">✓</div>
+      <div class="step-t" style="color:var(--green)">Dashboard activado</div>
+      <div class="step-d">Acceso a todo el arsenal. Herramientas desbloqueadas según tu volumen mensual.</div>
+    </div>
+  </div>
+</section>
+
+<!-- NIVELES -->
+<section class="section" id="niveles" style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="section-lbl">Sistema de progresión</div>
+  <div class="section-h2">Desbloquea con tu volumen</div>
+  <p class="section-p">Los primeros 30 días tienes acceso casi completo. Después, cada herramienta se desbloquea según tu volumen mensual operado en Bitunix.</p>
+  <div class="levels-row">
+    <div class="lv-card"><div class="lv-icon">🥉</div><div class="lv-name" style="color:#cd7f32">Bronce</div><div class="lv-vol">$50K+/mes</div><div class="lv-bar"><div style="height:100%;width:20%;background:#cd7f32;border-radius:2px"></div></div></div>
+    <div class="lv-card"><div class="lv-icon">🥈</div><div class="lv-name" style="color:#c0c0c0">Plata</div><div class="lv-vol">$150K+/mes</div><div class="lv-bar"><div style="height:100%;width:40%;background:#c0c0c0;border-radius:2px"></div></div></div>
+    <div class="lv-card"><div class="lv-icon">🥇</div><div class="lv-name" style="color:var(--gold)">Oro</div><div class="lv-vol">$500K+/mes</div><div class="lv-bar"><div style="height:100%;width:60%;background:var(--gold);border-radius:2px"></div></div></div>
+    <div class="lv-card"><div class="lv-icon">💎</div><div class="lv-name" style="color:#a78bfa">Elite</div><div class="lv-vol">$1M+/mes</div><div class="lv-bar"><div style="height:100%;width:80%;background:#a78bfa;border-radius:2px"></div></div></div>
+    <div class="lv-card" style="border-color:rgba(0,255,102,0.25)"><div class="lv-icon">⚡</div><div class="lv-name" style="color:var(--green)">VIP Elite</div><div class="lv-vol">$3M+/mes</div><div class="lv-bar"><div style="height:100%;width:100%;background:var(--green);border-radius:2px"></div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">LA MATEMÁTICA DEL <span>TRADING</span></div>
+  <div class="footer-links">
+    <a href="https://t.me/cryptokingc" target="_blank">Soporte</a>
+    <a href="https://www.bitunix.com/register?vipCode=mact" target="_blank">Bitunix</a>
+  </div>
+</footer>
+
+<!-- OVERLAY LOGIN -->
+<div class="overlay" id="ovLogin">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeAll()">✕</button>
+    <div class="modal-title">Ingresar al VIP</div>
+    <div style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px">Ingresa tu UID de Bitunix para acceder al dashboard</div>
+    <label class="m-label">UID de Bitunix</label>
+    <input class="m-input" id="loginUid" placeholder="Ej: 21094832" maxlength="20">
+    <div id="loginMsg"></div>
+    <button class="m-btn m-btn-green" id="loginBtn" onclick="doLogin()">Ingresar al Dashboard →</button>
+    <button class="m-btn m-btn-ghost" onclick="closeAll();openRegister()">¿No tienes cuenta? Únete gratis</button>
+  </div>
+</div>
+
+<!-- OVERLAY REGISTER -->
+<div class="overlay" id="ovReg">
+  <div class="modal-box">
+    <button class="modal-x" onclick="closeAll()">✕</button>
+    <div class="modal-title">Únete al VIP Gratis</div>
+    <div class="stp-nav">
+      <div class="stp-dot on" id="sd1">1</div>
+      <div class="stp-line" id="sl1"></div>
+      <div class="stp-dot" id="sd2">2</div>
+      <div class="stp-line" id="sl2"></div>
+      <div class="stp-dot" id="sd3">3</div>
+    </div>
+    <div class="stp-body on" id="sb1">
+      <div class="info-b">Crea tu cuenta exclusivamente bajo nuestro enlace <strong>Bitunix</strong>. Si ya tienes cuenta sin nuestro enlace, necesitas crear una nueva.</div>
+      <a href="https://www.bitunix.com/register?vipCode=mact" target="_blank" class="bitunix-a">🟢 Crear cuenta en Bitunix ↗</a>
+      <button class="m-btn m-btn-ghost" onclick="goStep(2)">Ya tengo cuenta →</button>
+    </div>
+    <div class="stp-body" id="sb2">
+      <div class="info-b" style="border-color:rgba(0,255,102,0.2)"><span style="display:block;margin-bottom:6px;font-size:15px">💰 <strong>Mínimo 100 USDT</strong></span>Capital 100% tuyo para operar. No es una membresía, es tu capital de trabajo.</div>
+      <button class="m-btn m-btn-green" onclick="goStep(3)">Ya deposité, continuar →</button>
+      <button class="m-btn m-btn-ghost" onclick="goStep(1)">← Volver</button>
+    </div>
+    <div class="stp-body" id="sb3">
+      <div class="info-b">Ingresa tu <strong>UID de Bitunix</strong>. Lo encuentras en Perfil → Cuenta. Verificación automática en segundos.</div>
+      <label class="m-label">UID de Bitunix</label>
+      <input class="m-input" id="regUid" placeholder="Ej: 21094832" maxlength="20">
+      <div id="regMsg"></div>
+      <button class="m-btn m-btn-green" id="regBtn" onclick="doRegister()">🛡️ Validar y obtener acceso</button>
+      <button class="m-btn m-btn-ghost" onclick="goStep(2)">← Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY PAY — PRO VERSION -->
+<div class="overlay" id="ovPay">
+  <div class="pay-modal">
+    <button class="modal-x" onclick="closeAll()">✕</button>
+    <div class="pay-header">
+      <div class="pay-badge">👑 Acceso VIP · Suscripción mensual</div>
+      <div class="pay-title">VIP de Pago</div>
+      <div class="pay-price">50 <span style="font-size:18px;color:var(--text2)">USDT</span></div>
+      <div class="pay-period">/ mes · renovación manual</div>
+    </div>
+
+    <div class="pay-includes">
+      <div class="pay-inc-item">Delta Matrix completo</div>
+      <div class="pay-inc-item">DCA Cuántico</div>
+      <div class="pay-inc-item">Recovery Pro</div>
+      <div class="pay-inc-item">Bitácora Pro</div>
+      <div class="pay-inc-item">Gestión Matemática</div>
+      <div class="pay-inc-item">Recompras Algorítmicas</div>
+      <div class="pay-inc-item">Torneo VIP</div>
+      <div class="pay-inc-item">Sala privada</div>
+    </div>
+
+    <div class="pay-divider"></div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:14px;">Dirección de pago · BSC (BEP-20)</div>
+
+    <div class="pay-qr-section">
+      <div class="pay-qr-box">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=0x4cb6f10b29150efa6c148b84642c7b16132c61dc&bgcolor=FFFFFF&color=000000&margin=4" alt="QR de pago">
+      </div>
+      <div class="pay-addr-section">
+        <div class="pay-net">🔗 Red: Binance Smart Chain (BEP-20)</div>
+        <div class="pay-addr" id="walletAddr">0x4cb6f10b29150efa6c148b84642c7b16132c61dc</div>
+        <button class="pay-copy-btn" onclick="copyWallet()">📋 Copiar dirección</button>
+        <div style="margin-top:10px;font-size:10px;color:var(--text3);line-height:1.5">⚠️ Envía <strong style="color:var(--gold)">solo USDT en red BSC</strong>. Otras redes o tokens se perderán.</div>
+      </div>
+    </div>
+
+    <button class="pay-cta" onclick="document.getElementById('ovPay').classList.remove('open');document.getElementById('ovPayForm').classList.add('open')">
+      ✅ Ya realicé el pago — Verificar
+    </button>
+    <div class="pay-security">🔒 Pago peer-to-peer · Sin intermediarios · Activación en &lt;24h</div>
+  </div>
+</div>
+
+<div class="overlay" id="ovPayForm">
+  <div class="modal-box" style="max-width:420px">
+    <button class="modal-x" onclick="closeAll()">✕</button>
+    <div class="modal-title">Verificar Transacción</div>
+    <div style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px">Envíanos los datos del pago para activar tu acceso VIP</div>
+    <label class="m-label">Usuario Telegram</label>
+    <input class="m-input" id="p_t" placeholder="@tuusuario" style="font-family:'Inter',sans-serif;font-size:14px;letter-spacing:0">
+    <label class="m-label">Email (opcional)</label>
+    <input class="m-input" id="p_e" placeholder="correo@email.com" style="font-family:'Inter',sans-serif;font-size:14px;letter-spacing:0">
+    <label class="m-label">TxID — Hash de la transacción</label>
+    <input class="m-input" id="p_tx" placeholder="0x..." style="font-size:12px">
+    <div style="font-size:11px;color:var(--text3);margin-top:8px">El TxID lo encuentras en tu wallet, en el historial de transacciones.</div>
+    <button class="m-btn m-btn-green" onclick="sendPay()" style="background:linear-gradient(135deg,var(--gold),#D4A010);color:#000;margin-top:18px">Enviar y activar VIP →</button>
+    <button class="m-btn m-btn-ghost" onclick="document.getElementById('ovPayForm').classList.remove('open');document.getElementById('ovPay').classList.add('open')">← Volver</button>
+  </div>
+</div>
+
+<script>
+// ===== STARS =====
+(function(){
+  const c=document.getElementById('stars'),cx=c.getContext('2d');
+  let W=c.width=window.innerWidth,H=c.height=window.innerHeight;
+  const pts=Array.from({length:120},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.1+0.2,o:Math.random()}));
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(150,200,255,${p.o*0.4})`;cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+  window.addEventListener('resize',()=>{W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
+})();
+
+// ===== CHART (candles + heatmap lines) =====
+(function(){
+  const canvas=document.getElementById('chartCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    const r=canvas.parentElement.getBoundingClientRect();
+    W=canvas.width=r.width;H=canvas.height=r.height;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // Generate candles
+  const N=50;
+  let candles=[];
+  let price=60000;
+  for(let i=0;i<N;i++){
+    const o=price;
+    const chg=(Math.random()-0.48)*300;
+    const c2=o+chg;
+    const h=Math.max(o,c2)+(Math.random()*120);
+    const l=Math.min(o,c2)-(Math.random()*120);
+    candles.push({o,c:c2,h,l});
+    price=c2;
+  }
+
+  // Heatmap levels (liquidez)
+  const liqLevels=[
+    {price:61200,strength:0.9,col:'rgba(255,69,96,0.55)'},
+    {price:60800,strength:0.6,col:'rgba(139,92,246,0.4)'},
+    {price:60400,strength:0.75,col:'rgba(139,92,246,0.45)'},
+    {price:59600,strength:0.85,col:'rgba(0,255,102,0.45)'},
+    {price:59200,strength:0.5,col:'rgba(0,255,102,0.3)'},
+    {price:58800,strength:0.65,col:'rgba(0,255,102,0.35)'},
+  ];
+
+  let tick=0;
+  function draw(){
+    if(!W||!H){resize();return;}
+    ctx.clearRect(0,0,W,H);
+
+    // price range
+    const prices=candles.flatMap(c=>[c.h,c.l]);
+    const minP=Math.min(...prices)-200;
+    const maxP=Math.max(...prices)+200;
+    const range=maxP-minP;
+    const toY=p=>H-(p-minP)/range*H;
+
+    // Draw liquidez heatmap bands
+    liqLevels.forEach(l=>{
+      const y=toY(l.price);
+      const pulse=0.7+0.3*Math.sin(tick*0.05+(l.price%100)/100*Math.PI);
+      const grd=ctx.createLinearGradient(0,0,W,0);
+      grd.addColorStop(0,'transparent');
+      grd.addColorStop(0.2,l.col.replace('0.','0.'+(l.strength*pulse).toFixed(2).slice(2)));
+      grd.addColorStop(0.8,l.col.replace('0.','0.'+(l.strength*pulse*0.6).toFixed(2).slice(2)));
+      grd.addColorStop(1,'transparent');
+      ctx.fillStyle=grd;
+      ctx.fillRect(0,y-6,W,12);
+    });
+
+    // Candles
+    const cw=Math.max(4,W/N-1.5);
+    const pad=(W-N*(cw+1.5))/2;
+    candles.forEach((c,i)=>{
+      const x=pad+i*(cw+1.5);
+      const oy=toY(c.o),cy=toY(c.c),hy=toY(c.h),ly=toY(c.l);
+      const bull=c.c>=c.o;
+      ctx.strokeStyle=bull?'rgba(0,255,102,0.7)':'rgba(255,69,96,0.7)';
+      ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(x+cw/2,hy);ctx.lineTo(x+cw/2,ly);ctx.stroke();
+      ctx.fillStyle=bull?'rgba(0,255,102,0.75)':'rgba(255,69,96,0.75)';
+      const top=Math.min(oy,cy),h2=Math.max(1,Math.abs(oy-cy));
+      ctx.fillRect(x,top,cw,h2);
+    });
+
+    // Animate last candle
+    const last=candles[N-1];
+    const delta=(Math.random()-0.48)*80;
+    last.c+=delta;
+    last.h=Math.max(last.h,last.c);
+    last.l=Math.min(last.l,last.c);
+
+    // Price line
+    const lastY=toY(last.c);
+    ctx.strokeStyle='rgba(0,255,102,0.5)';
+    ctx.setLineDash([4,4]);
+    ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(0,lastY);ctx.lineTo(W,lastY);ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Price tag
+    ctx.fillStyle='rgba(0,255,102,0.9)';
+    ctx.fillRect(0,lastY-8,60,16);
+    ctx.fillStyle='#000';
+    ctx.font='700 9px JetBrains Mono,monospace';
+    ctx.fillText('$'+(last.c).toFixed(0),4,lastY+3.5);
+
+    tick++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Update price display
+  setInterval(()=>{
+    const last=candles[N-1];
+    document.getElementById('priceDisplay').textContent='$'+last.c.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  },500);
+})();
+
+// ===== DOOM (order book) — animated with flash =====
+(function(){
+  const LEVELS=8;
+  let basePrice=60172;
+  let prevAsks=[], prevBids=[];
+
+  function makeLevel(price, maxSz, noise){
+    const sz=(Math.random()*maxSz+2).toFixed(1);
+    const str=Math.min(1,sz/maxSz);
+    return {p:price+Math.round(Math.random()*noise-noise/2), sz:parseFloat(sz), str};
+  }
+
+  function render(){
+    basePrice += Math.round((Math.random()-0.49)*12);
+    const el=document.getElementById('doomRows');
+    if(!el)return;
+
+    const asks=[], bids=[];
+    for(let i=LEVELS;i>0;i--) asks.push(makeLevel(basePrice+i*20, 35, 6));
+    for(let i=1;i<=LEVELS;i++) bids.push(makeLevel(basePrice-i*20, 45, 6));
+
+    let html='';
+    asks.forEach((a,i)=>{
+      const prev=prevAsks[i];
+      const flash=prev && Math.abs(a.sz-prev.sz)>5 ? 'flash-ask' : '';
+      const whale=a.str>0.85 ? ';box-shadow:0 0 8px rgba(255,69,96,0.6)' : '';
+      html+=`<div class="doom-row ${flash}">
+        <span class="doom-price dn">$${a.p.toLocaleString()}</span>
+        <div class="doom-bar-wrap"><div class="doom-bar" style="width:${(a.str*100).toFixed(0)}%;background:rgba(255,69,96,0.5)${whale}"></div></div>
+        <span class="doom-size" style="color:${a.str>0.8?'#FF4560':'var(--text3)'}">${a.sz.toFixed(1)}</span>
+      </div>`;
+    });
+
+    html+=`<div class="doom-spread">$${basePrice.toLocaleString()}</div>`;
+
+    bids.forEach((b,i)=>{
+      const prev=prevBids[i];
+      const flash=prev && Math.abs(b.sz-prev.sz)>7 ? 'flash-bid' : '';
+      const whale=b.str>0.85 ? ';box-shadow:0 0 8px rgba(0,255,102,0.6)' : '';
+      html+=`<div class="doom-row ${flash}">
+        <span class="doom-price up">$${b.p.toLocaleString()}</span>
+        <div class="doom-bar-wrap"><div class="doom-bar" style="width:${(b.str*100).toFixed(0)}%;background:rgba(0,255,102,0.45)${whale}"></div></div>
+        <span class="doom-size" style="color:${b.str>0.8?'var(--green)':'var(--text3)'}">${b.sz.toFixed(1)}</span>
+      </div>`;
+    });
+
+    el.innerHTML=html;
+    prevAsks=[...asks]; prevBids=[...bids];
+    document.getElementById('doomSpread').textContent=`Spread $${(asks[asks.length-1].p - bids[0].p).toFixed(0)}`;
+  }
+
+  render();
+  setInterval(render, 700);
+  // Random whale flash — random single row every 2.5s
+  setInterval(()=>{
+    const rows=document.querySelectorAll('#doomRows .doom-row');
+    if(!rows.length)return;
+    const r=rows[Math.floor(Math.random()*rows.length)];
+    const cls=r.querySelector('.doom-price.dn')?'flash-ask':'flash-bid';
+    r.classList.add(cls);
+    setTimeout(()=>r.classList.remove(cls),400);
+  },2500);
+})();
+
+// ===== HEATMAP — with glow classes =====
+(function(){
+  const grid=document.getElementById('heatGrid');
+  const COLS=20,ROWS=4;
+  for(let i=0;i<COLS*ROWS;i++){
+    const d=document.createElement('div');
+    d.className='heat-cell';
+    grid.appendChild(d);
+  }
+  function update(){
+    const cells=grid.querySelectorAll('.heat-cell');
+    cells.forEach((c,i)=>{
+      const row=Math.floor(i/COLS);
+      const intensity=Math.random();
+      const isHot=intensity>0.75;
+      const isWarm=intensity>0.48;
+      const isGreen=isHot && row>=2;
+      const isRed=isHot && row<2;
+      c.className='heat-cell';
+      let bg;
+      if(isRed){
+        bg=`rgba(255,${Math.round(intensity*60)},96,${0.7+intensity*0.3})`;
+        c.classList.add('glow-hot');
+      } else if(isGreen){
+        bg=`rgba(0,${Math.round(intensity*255)},102,${0.65+intensity*0.35})`;
+        c.classList.add('glow-green');
+      } else if(isWarm){
+        bg=`rgba(139,92,246,${0.3+intensity*0.4})`;
+        if(intensity>0.65) c.classList.add('glow-warm');
+      } else {
+        bg=`rgba(255,255,255,${0.02+intensity*0.04})`;
+      }
+      c.style.background=bg;
+    });
+  }
+  update();
+  setInterval(update,900);
+  // staggered micro-updates for flicker effect
+  setInterval(()=>{
+    const cells=grid.querySelectorAll('.heat-cell');
+    const idx=Math.floor(Math.random()*cells.length);
+    const c=cells[idx];
+    const on=Math.random()>0.4;
+    if(on) c.classList.add('glow-green');
+    else c.classList.remove('glow-green','glow-hot');
+  },250);
+})();
+
+// ===== ALERTS =====
+(function(){
+  const feed=document.getElementById('alertFeed');
+  const alerts=[
+    {type:'long',text:'⬆ LONG · Absorción masiva $60,000 · 89 BTC'},
+    {type:'long',text:'⬆ LONG · CVD positivo sostenido · 4 velas'},
+    {type:'short',text:'⬇ SHORT · Liquidez en $60,400 detectada'},
+    {type:'info',text:'🧠 IA · Acumulación institucional · rango definido'},
+    {type:'short',text:'⬇ SHORT · Stop hunt probable $60,600'},
+    {type:'long',text:'⬆ LONG · Bid wall $59,800 · 134 BTC'},
+    {type:'info',text:'🧠 IA · Modo radar · inyección institucional próxima'},
+    {type:'long',text:'⬆ LONG · Imbalance alcista · zona $59,600'},
+  ];
+  let idx=0,shown=[];
+  const MAX=3;
+  function addAlert(){
+    const a=alerts[idx%alerts.length]; idx++;
+    const chip=document.createElement('div');
+    chip.className=`alert-chip alert-${a.type}`;
+    chip.textContent=a.text;
+    feed.appendChild(chip);
+    shown.push(chip);
+    if(shown.length>MAX){
+      const old=shown.shift();
+      old.style.opacity='0';old.style.transition='opacity 0.4s';
+      setTimeout(()=>old.remove(),400);
+    }
+  }
+  addAlert();
+  setInterval(addAlert,3200);
+})();
+
+// ===== AI ROW rotation =====
+(function(){
+  const msgs=[
+    'Mercado en acumulación · esperando inyección institucional',
+    'CVD positivo · dominancia compradora activa',
+    'Bid wall detectado en $59,800 · soporte fuerte',
+    'Liquidez sobre $60,400 · zona de interés bajista',
+    'Modo radar · rango definido · esperar ruptura',
+  ];
+  let i=0;
+  setInterval(()=>{
+    i=(i+1)%msgs.length;
+    document.getElementById('aiRow').textContent=msgs[i];
+  },4000);
+})();
+
+// ===== TICKER animation =====
+(function(){
+  const ids=['t1','t2','t3','t4','t5'];
+  const base=[2.41,-0.21,-0.85,1.27,-0.39];
+  setInterval(()=>{
+    ids.forEach((id,i)=>{
+      const el=document.getElementById(id);
+      const v=base[i]+(Math.random()-0.5)*0.3;
+      base[i]=v;
+      el.textContent=(v>=0?'+':'')+v.toFixed(2)+'%';
+      el.className='dm-tick-pct '+(v>=0?'up':'dn');
+    });
+  },2000);
+})();
+
+// ===== LIVE TICKER — Top 20 coins real prices =====
+(function(){
+  const COINS=[
+    {id:'bitcoin',sym:'BTC',color:'#F7931A'},
+    {id:'ethereum',sym:'ETH',color:'#627EEA'},
+    {id:'solana',sym:'SOL',color:'#9945FF'},
+    {id:'binancecoin',sym:'BNB',color:'#F0B90B'},
+    {id:'ripple',sym:'XRP',color:'#00AAE4'},
+    {id:'cardano',sym:'ADA',color:'#0033AD'},
+    {id:'avalanche-2',sym:'AVAX',color:'#E84142'},
+    {id:'dogecoin',sym:'DOGE',color:'#C2A633'},
+    {id:'polkadot',sym:'DOT',color:'#E6007A'},
+    {id:'chainlink',sym:'LINK',color:'#2A5ADA'},
+    {id:'uniswap',sym:'UNI',color:'#FF007A'},
+    {id:'litecoin',sym:'LTC',color:'#BFBBBB'},
+    {id:'near',sym:'NEAR',color:'#00C1DE'},
+    {id:'internet-computer',sym:'ICP',color:'#29ABE2'},
+    {id:'aptos',sym:'APT',color:'#00C8A0'},
+    {id:'sui',sym:'SUI',color:'#4DA2FF'},
+    {id:'pepe',sym:'PEPE',color:'#00AA22'},
+    {id:'toncoin',sym:'TON',color:'#0088CC'},
+    {id:'stellar',sym:'XLM',color:'#7BC4E2'},
+    {id:'shiba-inu',sym:'SHIB',color:'#FFA409'},
+  ];
+
+  let data={};
+
+  function buildTicker(){
+    const track=document.getElementById('tickerTrack');
+    if(!track)return;
+    let html='';
+    // duplicate for seamless loop
+    for(let pass=0;pass<2;pass++){
+      COINS.forEach(c=>{
+        const d=data[c.id];
+        const price=d?formatPrice(d.usd):'—';
+        const pct=d?d.usd_24h_change:null;
+        const pctStr=pct!=null?(pct>=0?'+':'')+pct.toFixed(2)+'%':'—';
+        const cls=pct!=null?(pct>=0?'up':'dn'):'';
+        html+=`<div class="t-chip">
+          <span style="width:8px;height:8px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0"></span>
+          <span class="t-sym">${c.sym}</span>
+          <span class="t-price">$${price}</span>
+          <span class="t-pct ${cls}">${pctStr}</span>
+        </div>`;
+      });
+    }
+    track.innerHTML=html;
+    // Reset animation
+    track.style.animation='none';
+    track.offsetHeight;
+    track.style.animation='tickerScroll 55s linear infinite';
+  }
+
+  function formatPrice(p){
+    if(!p)return'—';
+    if(p>=1000)return p.toLocaleString('en',{maximumFractionDigits:0});
+    if(p>=1)return p.toFixed(2);
+    if(p>=0.01)return p.toFixed(4);
+    return p.toFixed(6);
+  }
+
+  async function fetchPrices(){
+    try{
+      const ids=COINS.map(c=>c.id).join(',');
+      const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true`);
+      const d=await r.json();
+      data=d;
+      buildTicker();
+    }catch(e){
+      // fallback static if API fails
+      buildTicker();
+    }
+  }
+
+  // Build immediately with placeholders, then fetch
+  buildTicker();
+  fetchPrices();
+  setInterval(fetchPrices,60000);
+})();
+
+function copyWallet(){
+  navigator.clipboard.writeText('0x4cb6f10b29150efa6c148b84642c7b16132c61dc').then(()=>{
+    const btn=document.querySelector('.pay-copy-btn');
+    if(btn){const orig=btn.textContent;btn.textContent='✅ Copiado!';setTimeout(()=>btn.textContent=orig,2000);}
+  });
+}
+function openPayModal(){document.getElementById('ovPay').classList.add('open');}
+
+
+
+// ===== MODALS =====
+function openLogin(){document.getElementById('ovLogin').classList.add('open');}
+function openRegister(){document.getElementById('ovReg').classList.add('open');goStep(1);}
+function closeAll(){document.querySelectorAll('.overlay').forEach(o=>o.classList.remove('open'));}
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeAll();}));
+
+function goStep(n){
+  [1,2,3].forEach(i=>{
+    document.getElementById('sb'+i).classList.remove('on');
+    const d=document.getElementById('sd'+i);
+    d.classList.remove('on','done');
+    if(i<n)d.classList.add('done'); else if(i===n)d.classList.add('on');
+  });
+  document.getElementById('sb'+n).classList.add('on');
+  document.getElementById('sl1').classList.toggle('done',n>1);
+  document.getElementById('sl2').classList.toggle('done',n>2);
+}
+
+// ===== LOGIN =====
+async function loginWithUID(){
+  const uid=document.getElementById('heroUid').value.trim();
+  const msg=document.getElementById('qlMsg');
+  if(!uid){showMsg(msg,'Ingresa tu UID primero','err');return;}
+  showMsg(msg,'Verificando...','load');
+  try{
+    const r=await fetch('https://validador.ligalamatematicadeltrading.club/api/verificar-acceso',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid})});
+    const d=await r.json();
+    if(d.success){sessionStorage.setItem('acceso_vip','aprobado_por_servidor');sessionStorage.setItem('uid_usuario',uid);window.location.href='/vip.html';}
+    else{showMsg(msg,'UID no encontrado. ¿Completaste el registro?','err');}
+  }catch(e){showMsg(msg,'Error de conexión','err');}
+}
+async function doLogin(){
+  const uid=document.getElementById('loginUid').value.trim();
+  const msg=document.getElementById('loginMsg');
+  const btn=document.getElementById('loginBtn');
+  if(!uid){showMsg(msg,'Ingresa tu UID','err');return;}
+  btn.disabled=true;btn.textContent='Verificando...';
+  showMsg(msg,'Conectando...','load');
+  try{
+    const r=await fetch('https://validador.ligalamatematicadeltrading.club/api/verificar-acceso',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid})});
+    const d=await r.json();
+    if(d.success){sessionStorage.setItem('acceso_vip','aprobado_por_servidor');sessionStorage.setItem('uid_usuario',uid);window.location.href='/vip.html';}
+    else{showMsg(msg,'UID no encontrado. ¿Completaste el registro?','err');btn.disabled=false;btn.textContent='Ingresar al Dashboard →';}
+  }catch(e){showMsg(msg,'Error de conexión','err');btn.disabled=false;btn.textContent='Ingresar al Dashboard →';}
+}
+
+// ===== REGISTER =====
+async function doRegister(){
+  const uid=document.getElementById('regUid').value.trim();
+  const msg=document.getElementById('regMsg');
+  const btn=document.getElementById('regBtn');
+  if(!uid){showMsg(msg,'Ingresa tu UID','err');return;}
+  btn.disabled=true;btn.textContent='⏳ Consultando Bitunix...';
+  showMsg(msg,'Verificando con Bitunix...','load');
+  const soporte=`<div style="margin-top:10px"><a href="https://t.me/cryptokingc" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:rgba(0,136,204,0.08);color:#0088cc;border:1px solid rgba(0,136,204,0.25);border-radius:7px;text-decoration:none;font-size:12px;font-weight:600">💬 Contactar Soporte</a></div>`;
+  try{
+    const r=await fetch('https://validador.ligalamatematicadeltrading.club/api/validar-uid',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid,telegramUser:'registro_web'})});
+    const d=await r.json();
+    if(d.success){
+      btn.style.display='none';
+      msg.style.display='block';msg.className='msg-ok';
+      msg.innerHTML='✅ ¡Validado! <button onclick="sessionStorage.setItem(\'acceso_vip\',\'aprobado_por_servidor\');sessionStorage.setItem(\'uid_usuario\',\''+uid+'\');window.location.href=\'/vip.html\'" style="margin-left:10px;padding:6px 14px;background:var(--green);color:#000;border:none;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px">Ingresar →</button>';
+    }else{
+      btn.disabled=false;btn.textContent='🛡️ Validar y obtener acceso';
+      msg.style.display='block';msg.className='msg-err';
+      msg.innerHTML=(d.mensaje||'UID no válido o sin depósito.')+soporte;
+    }
+  }catch(e){
+    btn.disabled=false;btn.textContent='🛡️ Validar y obtener acceso';
+    msg.style.display='block';msg.className='msg-err';
+    msg.innerHTML='Error de conexión'+soporte;
+  }
+}
+
+// ===== PAY =====
+async function sendPay(){
+  const t=document.getElementById('p_t').value,e=document.getElementById('p_e').value,tx=document.getElementById('p_tx').value;
+  const msg=`💰 PAGO VIP\n👤 Telegram: ${t}\n📧 Email: ${e}\n💳 TxID: ${tx}`;
+  await fetch(`https://api.telegram.org/bot8348473884:AAH8WbbopI3T09eMNrqvRMcawBktqTbMmu0/sendMessage?chat_id=836480163&text=${encodeURIComponent(msg)}`);
+  closeAll();alert('✅ Datos enviados. Te contactaremos pronto.');
+}
+
+// ===== UTILS =====
+function showMsg(el,text,type){
+  el.style.display='block';
+  el.className=type==='err'?'msg-err':type==='ok'?'msg-ok':'msg-load';
+  el.textContent=text;
+}
+document.getElementById('heroUid').addEventListener('keydown',e=>{if(e.key==='Enter')loginWithUID();});
+document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
