@@ -511,53 +511,46 @@ nav{
 /* ===== DOM OVERLAY derecho ===== */
 .dom-overlay{
   position:absolute;
-  top:13%;right:0;bottom:9%;
-  width:8.5%;
-  background:rgba(6,8,14,0.88);
+  top:14.5%;right:0;bottom:8.5%;
+  width:8.8%;
+  background:#080A0F;
   display:flex;flex-direction:column;
   z-index:8;
   overflow:hidden;
-  border-left:1px solid rgba(255,255,255,0.04);
 }
 .dom-ask-side{
-  flex:0 0 62%;  /* asks ocupan 62% — precio en el tercio inferior */
+  flex:0 0 62%;
   display:flex;flex-direction:column;
   justify-content:flex-end;
-  gap:0px;padding:2px 0 0 0;
   overflow:hidden;
+  padding:0;
 }
 .dom-bid-side{
-  flex:0 0 34%;
+  flex:0 0 35%;
   display:flex;flex-direction:column;
   justify-content:flex-start;
-  gap:0px;padding:0 0 2px 0;
   overflow:hidden;
+  padding:0;
 }
 .dom-bar{
-  height:4px;
-  border-radius:2px 0 0 2px;
+  height:5px;
+  border-radius:1px 0 0 1px;
   margin-left:auto;
-  transition:width 0.25s ease;
-  width:10%;  /* default, JS lo sobreescribe */
+  transition:width 0.22s ease;
   flex-shrink:0;
+  display:block;
 }
-.dom-bar.ask{
-  background:linear-gradient(90deg,rgba(255,69,96,0.2),rgba(255,69,96,0.9));
-}
-.dom-bar.bid{
-  background:linear-gradient(90deg,rgba(0,255,102,0.2),rgba(0,255,102,0.9));
-}
-.dom-bar.wall-ask{ box-shadow:0 0 6px rgba(255,69,96,0.6); }
-.dom-bar.wall-bid{ box-shadow:0 0 6px rgba(0,255,102,0.6); }
+.dom-bar.ask{ background:#E8485A; }
+.dom-bar.bid{ background:#00CC52; }
+.dom-bar.wall-ask{ background:#FF2040; height:6px; }
+.dom-bar.wall-bid{ background:#00FF66; height:6px; }
 .dom-mid-price{
   font-family:'JetBrains Mono',monospace;
   font-size:8px;font-weight:700;color:#fff;
-  text-align:center;padding:2px 2px;
-  background:rgba(0,255,102,0.18);
-  border-top:1px solid rgba(0,255,102,0.4);
-  border-bottom:1px solid rgba(0,255,102,0.4);
-  letter-spacing:0.3px;
+  text-align:center;padding:2px 3px;
+  background:#00CC52;
   flex-shrink:0;
+  letter-spacing:0.3px;
 }
 
 @keyframes iaSlideIn{
@@ -1931,8 +1924,8 @@ document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='E
 
 // ===== DOM OVERLAY ANIMATION =====
 (function(){
-  const ASK_ROWS = 22;  // más filas arriba (precio en tercio inferior)
-  const BID_ROWS = 12;
+  const ASK_ROWS = 32;  // más filas para llenar el espacio
+  const BID_ROWS = 19;
   let price = 59900;
 
   // Genera un perfil irregular real de DOM:
