@@ -1,5 +1,8 @@
 # La Matemática del Trading
 
+![Estado](https://img.shields.io/badge/estado-en%20desarrollo-yellow)
+![Licencia](https://img.shields.io/badge/licencia-MIT-blue)
+
 Página web educativa sobre los fundamentos matemáticos aplicados al trading.
 
 ## Contenido
