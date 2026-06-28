@@ -508,6 +508,44 @@ nav{
 }
 .ia-chip .ia-icon{ font-size:11px; }
 .ia-chip .ia-msg{ opacity:0.9; }
+/* ===== DOM OVERLAY derecho ===== */
+.dom-overlay{
+  position:absolute;
+  top:13%;right:0;bottom:9%;
+  width:8.5%;
+  background:rgba(6,8,14,0.82);
+  display:flex;flex-direction:column;
+  z-index:8;
+  overflow:hidden;
+  border-left:1px solid rgba(0,255,102,0.08);
+}
+.dom-ask-side,.dom-bid-side{
+  flex:1;display:flex;flex-direction:column;
+  justify-content:flex-end;gap:1.5px;
+  padding:3px 0;overflow:hidden;
+}
+.dom-bid-side{ justify-content:flex-start; }
+.dom-bar{
+  height:5px;border-radius:2px 0 0 2px;
+  margin-left:auto;
+  transition:width 0.35s ease;
+  min-width:2px;
+}
+.dom-bar.ask{ background:linear-gradient(90deg,rgba(255,69,96,0.3),rgba(255,69,96,0.85)); }
+.dom-bar.bid{ background:linear-gradient(90deg,rgba(0,255,102,0.3),rgba(0,255,102,0.85)); }
+.dom-bar.ask.big{ box-shadow:0 0 4px rgba(255,69,96,0.5); }
+.dom-bar.bid.big{ box-shadow:0 0 4px rgba(0,255,102,0.5); }
+.dom-mid-price{
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;font-weight:700;color:#fff;
+  text-align:center;padding:3px 2px;
+  background:rgba(0,255,102,0.15);
+  border-top:1px solid rgba(0,255,102,0.3);
+  border-bottom:1px solid rgba(0,255,102,0.3);
+  letter-spacing:0.5px;
+  flex-shrink:0;
+}
+
 @keyframes iaSlideIn{
   from{ opacity:0; transform:translateX(-8px); }
   to{   opacity:1; transform:translateX(0); }
@@ -992,6 +1030,12 @@ footer{
           <div class="scan-line"></div>
           <!-- ALERTAS IA LONG/SHORT animadas -->
           <div class="ia-alerts" id="iaAlerts"></div>
+          <!-- DOM OVERLAY derecho: libro de órdenes vivo -->
+          <div class="dom-overlay">
+            <div class="dom-ask-side" id="domAsks"></div>
+            <div class="dom-mid-price" id="domMidPrice">$59,900</div>
+            <div class="dom-bid-side" id="domBids"></div>
+          </div>
         </div>
 
       </div><!-- /dm-window -->
@@ -1870,6 +1914,75 @@ function showMsg(el,text,type){
 }
 document.getElementById('heroUid').addEventListener('keydown',e=>{if(e.key==='Enter')loginWithUID();});
 document.getElementById('loginUid').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+// ===== DOM OVERLAY ANIMATION =====
+(function(){
+  const ROWS = 14;
+  let price = 59900;
+
+  function rndW(base, spread){
+    return Math.max(4, Math.min(100, base + (Math.random()-0.5)*spread));
+  }
+
+  function buildBars(container, type, rows){
+    container.innerHTML = '';
+    // Genera tamaños de barras: más grandes cerca del precio (centro)
+    for(let i=0; i<rows; i++){
+      const distFromPrice = type==='ask' ? rows-1-i : i;
+      const base = 70 - distFromPrice * 4;
+      const w = rndW(base, 30);
+      const isBig = w > 75;
+      const bar = document.createElement('div');
+      bar.className = `dom-bar ${type}${isBig?' big':''}`;
+      bar.style.width = w+'%';
+      container.appendChild(bar);
+    }
+  }
+
+  function updateDOM(){
+    const asks = document.getElementById('domAsks');
+    const bids = document.getElementById('domBids');
+    const mid  = document.getElementById('domMidPrice');
+    if(!asks||!bids) return;
+
+    // Mueve el precio ligeramente
+    price += (Math.random()-0.5)*8;
+
+    // Actualiza solo algunas barras (no todas a la vez para que se vea orgánico)
+    const askBars = asks.querySelectorAll('.dom-bar');
+    const bidBars = bids.querySelectorAll('.dom-bar');
+
+    if(askBars.length === 0 || bidBars.length === 0){
+      buildBars(asks, 'ask', ROWS);
+      buildBars(bids, 'bid', ROWS);
+    } else {
+      // Actualiza 3-5 barras aleatorias por ciclo
+      const toUpdate = 4;
+      for(let k=0; k<toUpdate; k++){
+        const ai = Math.floor(Math.random()*ROWS);
+        const bi = Math.floor(Math.random()*ROWS);
+        const distA = ROWS-1-ai;
+        const distB = bi;
+        askBars[ai].style.width = rndW(70-distA*4, 30)+'%';
+        bidBars[bi].style.width = rndW(70-distB*4, 30)+'%';
+      }
+    }
+
+    if(mid) mid.textContent = '$'+Math.round(price).toLocaleString();
+  }
+
+  // Primer render
+  setTimeout(()=>{
+    const asks = document.getElementById('domAsks');
+    const bids = document.getElementById('domBids');
+    if(asks && bids){
+      buildBars(asks,'ask',ROWS);
+      buildBars(bids,'bid',ROWS);
+    }
+  }, 100);
+
+  setInterval(updateDOM, 280);
+})();
 
 // ===== IA LONG/SHORT ALERTS =====
 (function(){
