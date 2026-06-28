@@ -265,62 +265,26 @@ nav{
   padding:80px 32px 40px 0;height:100%;min-height:calc(100vh - 62px);
 }
 
-/* ===== MAC FRAME ===== */
-.mac-outer{
-  width:100%;max-width:700px;
-  position:relative;
-  filter:drop-shadow(0 40px 90px rgba(0,0,0,0.75)) drop-shadow(0 0 80px rgba(0,255,102,0.09));
-  animation:macFloat 5s ease-in-out infinite;
-}
-@keyframes macFloat{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-8px)}
-}
-.mac-body{
-  background:linear-gradient(160deg,#DCDCDC 0%,#B8B8B8 45%,#A0A0A0 100%);
-  border-radius:18px 18px 6px 6px;
-  padding:13px 13px 0;
-  position:relative;
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,0.45) inset,
-    0 0 0 1px rgba(0,0,0,0.35);
-}
-.mac-camera{
-  position:absolute;top:6px;left:50%;transform:translateX(-50%);
-  width:5px;height:5px;border-radius:50%;
-  background:radial-gradient(#6A6A6A,#444);
-  box-shadow:0 0 0 1.5px rgba(0,0,0,0.4);
-}
-.mac-screen-wrap{
-  background:#000;
-  border-radius:7px 7px 0 0;
-  overflow:hidden;
-  border:2px solid #1E1E1E;
-  position:relative;
-}
-/* green ambient glow behind screen */
-.mac-screen-wrap::after{
-  content:'';position:absolute;inset:0;pointer-events:none;z-index:10;
-  background:radial-gradient(ellipse at 50% 0%,rgba(0,255,102,0.06),transparent 60%);
-}
-.mac-chin-bar{
-  height:26px;
-  background:linear-gradient(180deg,#B0B0B0 0%,#C4C4C4 50%,#ADADAD 100%);
-  border-radius:0 0 6px 6px;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 0 1px rgba(0,0,0,0.25);
-}
-/* Apple logo SVG inline */
-.mac-apple{width:13px;height:16px;opacity:0.35;}
-
+/* ===== DELTA MATRIX REAL LOOK ===== */
 .dm-window{
   width:100%;
-  background:var(--bg2);
-  position:relative;
+  background:#080A0F;
+  border-radius:12px;
+  overflow:hidden;
+  border:1px solid rgba(0,255,102,0.15);
+  box-shadow:
+    0 0 0 1px rgba(0,255,102,0.08),
+    0 30px 80px rgba(0,0,0,0.8),
+    0 0 80px rgba(0,255,102,0.05);
+  animation:dmFloat 6s ease-in-out infinite;
+}
+@keyframes dmFloat{
+  0%,100%{transform:translateY(0) rotate(0deg)}
+  50%{transform:translateY(-7px)}
 }
 .dm-window::before{
   content:'';position:absolute;top:0;left:10%;right:10%;height:1px;
-  background:linear-gradient(90deg,transparent,var(--green),transparent);
+  background:linear-gradient(90deg,transparent,rgba(0,255,102,0.6),transparent);
   z-index:5;
 }
 
@@ -466,6 +430,28 @@ canvas#chartCanvas{width:100%!important;height:100%!important;display:block;}
   display:flex;align-items:center;gap:6px;
 }
 .dm-ai-row::before{content:'🧠';font-size:10px;}
+
+/* REAL TICKER BADGES */
+.rt-badge{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 8px;border-radius:6px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  font-size:10px;font-family:'JetBrains Mono',monospace;
+  white-space:nowrap;flex-shrink:0;
+}
+.rt-pct{font-weight:700;font-size:10px;}
+.rt-meta{color:rgba(255,255,255,0.35);font-size:9px;}
+
+/* LEFT TOOLBAR BUTTONS */
+.dm-tool{
+  width:24px;height:24px;border-radius:5px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:rgba(255,255,255,0.3);
+  cursor:pointer;transition:0.15s;
+  font-family:monospace;
+}
+.dm-tool:hover{color:rgba(255,255,255,0.7);background:rgba(255,255,255,0.05);}
 
 /* FEATURE PILLS below window */
 .feat-pills{
@@ -703,17 +689,107 @@ footer{
     </div>
   </div>
 
-  <!-- RIGHT — ANIMATED DELTA MATRIX INSIDE MAC -->
+  <!-- RIGHT — DELTA MATRIX REAL LOOK -->
   <div class="hero-right">
-    <div style="width:100%;max-width:700px">
-    <div class="mac-outer">
-      <div class="mac-body">
-        <div class="mac-camera"></div>
-        <div class="mac-screen-wrap">
+    <div style="width:100%;max-width:760px">
       <div class="dm-window">
 
-        <!-- CHROME -->
-        <div class="dm-chrome">
+        <!-- REAL ASSET TICKER BAR -->
+        <div style="background:#080A0F;border-bottom:1px solid rgba(255,255,255,0.05);padding:6px 10px;display:flex;gap:8px;flex-wrap:nowrap;overflow:hidden;">
+          <div class="rt-badge" style="border-color:rgba(247,147,26,0.5)">
+            <span style="color:#F7931A;font-weight:800">● BTC</span>
+            <span class="rt-pct dn" id="t1">-1.16%</span>
+            <span class="rt-meta">Vol: 5.15B &nbsp;<b id="tp1" style="color:#fff">59420.3</b></span>
+          </div>
+          <div class="rt-badge" style="border-color:rgba(98,126,234,0.5)">
+            <span style="color:#627EEA;font-weight:800">● ETH</span>
+            <span class="rt-pct dn" id="t2">-0.89%</span>
+            <span class="rt-meta">Vol: 3.61B &nbsp;<b id="tp2" style="color:#fff">1563.05</b></span>
+          </div>
+          <div class="rt-badge" style="border-color:rgba(0,170,228,0.5)">
+            <span style="color:#00AAE4;font-weight:800">✕ XRP</span>
+            <span class="rt-pct dn" id="t3">-1.01%</span>
+            <span class="rt-meta">Vol: 274M &nbsp;<b id="tp3" style="color:#fff">1.0431</b></span>
+          </div>
+          <div class="rt-badge" style="border-color:rgba(190,190,190,0.4)">
+            <span style="color:#C0C0C0;font-weight:800">◎ LTC</span>
+            <span class="rt-pct up" id="t4">+0.43%</span>
+            <span class="rt-meta">Vol: 43.1M &nbsp;<b id="tp4" style="color:#fff">42.47</b></span>
+          </div>
+          <div class="rt-badge" style="border-color:rgba(0,255,102,0.35)">
+            <span style="color:#00FF66;font-weight:800">◆ HYPE</span>
+            <span class="rt-pct dn" id="t5">-0.43%</span>
+            <span class="rt-meta">Vol: 465M &nbsp;<b id="tp5" style="color:#fff">61.97</b></span>
+          </div>
+        </div>
+
+        <!-- CHART BODY -->
+        <div style="display:flex;height:430px;position:relative;">
+          <!-- LEFT TOOL STRIP -->
+          <div style="width:36px;background:#0A0D14;border-right:1px solid rgba(255,255,255,0.04);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:9px;flex-shrink:0;">
+            <div class="dm-tool">↕</div>
+            <div class="dm-tool" style="color:var(--green);background:rgba(0,255,102,0.1)">⊹</div>
+            <div style="width:14px;height:1px;background:rgba(255,255,255,0.07)"></div>
+            <div class="dm-tool">⊘</div>
+            <div class="dm-tool">╱</div>
+            <div class="dm-tool">◫</div>
+            <div class="dm-tool">✎</div>
+            <div style="width:14px;height:1px;background:rgba(255,255,255,0.07)"></div>
+            <div class="dm-tool">📌</div>
+            <div class="dm-tool" style="margin-top:auto">👁</div>
+            <div class="dm-tool">🔒</div>
+          </div>
+
+          <!-- MAIN CHART -->
+          <div style="flex:1;position:relative;overflow:hidden;background:#080A0F;">
+            <canvas id="chartCanvas" style="position:absolute;inset:0;width:100%!important;height:100%!important"></canvas>
+            <!-- APALANCAMIENTO LEGEND -->
+            <div style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.07);border-radius:4px;padding:4px 10px;font-size:9px;font-family:'JetBrains Mono',monospace;display:flex;gap:10px;align-items:center;z-index:5;">
+              <span style="color:#666">APALANCAMIENTO</span>
+              <span><span style="color:#00FF66">●</span> 100x</span>
+              <span><span style="color:#00BBFF">●</span> 50x</span>
+              <span style="color:#5599FF">● 25x</span>
+            </div>
+            <!-- ALERT FEED -->
+            <div class="alert-feed" id="alertFeed"></div>
+          </div>
+
+          <!-- RIGHT VOLUME PROFILE -->
+          <div style="width:115px;background:#080A0F;border-left:1px solid rgba(255,255,255,0.04);position:relative;overflow:hidden;">
+            <canvas id="volProfileCanvas" style="position:absolute;inset:0;width:100%!important;height:100%!important"></canvas>
+          </div>
+        </div>
+
+        <!-- BOTTOM TOOLBAR -->
+        <div class="dm-bottom">
+          <div class="dm-tabs">
+            <div class="dm-tab active">🤖 IA CVD</div>
+            <div class="dm-tab">📚 DOM</div>
+            <div class="dm-tab">🔢 DELTAS</div>
+            <div class="dm-tab">🔥 HEATMAP LIQ</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="dm-live-badge"><div class="live-pulse" style="width:5px;height:5px"></div>EN VIVO</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#fff;font-weight:700" id="priceDisplay">$59,420</div>
+          </div>
+        </div>
+      </div><!-- /dm-window -->
+
+      <!-- FEATURE PILLS -->
+      <div class="feat-pills">
+        <div class="feat-pill hi">🔥 Heatmap LIQ</div>
+        <div class="feat-pill hi">🤖 IA CVD</div>
+        <div class="feat-pill hi">📚 DOM</div>
+        <div class="feat-pill hi">🔢 DELTAS</div>
+        <div class="feat-pill">🔬 Vela Viva</div>
+        <div class="feat-pill">📊 VPVR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REMOVED OLD CHROME/MAC SECTION PLACEHOLDER -->
+<div style="display:none"><!-- OLD CHROME
           <div class="dm-dots">
             <div class="dm-dot" style="background:#FF5F57"></div>
             <div class="dm-dot" style="background:#FEBC2E"></div>
@@ -763,37 +839,6 @@ footer{
         <!-- BOTTOM BAR -->
         <div class="dm-bottom">
           <div class="dm-tabs">
-            <div class="dm-tab active">DOM</div>
-            <div class="dm-tab">CVD</div>
-            <div class="dm-tab">DELTA</div>
-            <div class="dm-tab">NEBULA</div>
-          </div>
-          <div class="dm-ai-row" id="aiRow">Mercado en acumulación · esperando inyección institucional</div>
-        </div>
-      </div>
-
-        </div><!-- /dm-window -->
-        </div><!-- /mac-screen-wrap -->
-      </div><!-- /mac-body -->
-      <div class="mac-chin-bar">
-        <svg class="mac-apple" viewBox="0 0 14 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M13.17 12.36c-.28.63-.62 1.21-1.01 1.74-.53.75-1.05 1.27-1.56 1.56-.62.36-1.29.54-2.01.55-.51 0-1.13-.14-1.85-.43-.72-.29-1.39-.43-2-.43-.64 0-1.32.14-2.05.43-.73.29-1.32.44-1.78.46-.69.03-1.38-.16-2.07-.56-.55-.31-1.08-.85-1.6-1.6-.55-.8-1-1.73-1.34-2.79C-3.47 10.17-3.6 9-3.6 7.86c0-1.3.28-2.43.83-3.37.44-.74.99-1.33 1.66-1.77.67-.44 1.39-.67 2.17-.68.54 0 1.24.17 2.12.5.87.33 1.43.5 1.67.5.18 0 .8-.2 1.85-.59.99-.37 1.83-.52 2.52-.46 1.86.15 3.25.88 4.18 2.2-1.66 1-2.48 2.41-2.47 4.22.01 1.41.52 2.58 1.55 3.5.46.44.97.77 1.54.99-.12.36-.25.7-.4 1.02zM9.76 0c0 1.1-.4 2.13-1.2 3.08-.96 1.12-2.13 1.77-3.39 1.67-.02-.13-.02-.27-.02-.4 0-1.06.46-2.2 1.28-3.13C6.84.74 7.37.36 8.01.08 8.65-.2 9.26-.33 9.84-.34c.02.12.02.24.02.34h-.1z" fill="#444"/>
-        </svg>
-      </div>
-    </div><!-- /mac-outer -->
-
-      <!-- FEATURE PILLS -->
-      <div class="feat-pills">
-        <div class="feat-pill hi">📖 Libro en vivo</div>
-        <div class="feat-pill hi">🔥 Heatmap</div>
-        <div class="feat-pill hi">Δ CVD</div>
-        <div class="feat-pill hi">⚡ Alertas IA</div>
-        <div class="feat-pill">📌 Foto Pinc</div>
-        <div class="feat-pill">🧠 Análisis IA</div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- HERRAMIENTAS -->
 <section class="section" id="herramientas" style="background:var(--bg2);border-top:1px solid var(--border)">
@@ -1018,114 +1063,244 @@ footer{
   window.addEventListener('resize',()=>{W=c.width=window.innerWidth;H=c.height=window.innerHeight;});
 })();
 
-// ===== CHART (candles + heatmap lines) =====
+// ===== CHART — Real Delta Matrix look with heatmap bands =====
 (function(){
   const canvas=document.getElementById('chartCanvas');
+  if(!canvas)return;
   const ctx=canvas.getContext('2d');
   let W,H;
   function resize(){
     const r=canvas.parentElement.getBoundingClientRect();
-    W=canvas.width=r.width;H=canvas.height=r.height;
+    W=canvas.width=r.width||600;H=canvas.height=r.height||430;
   }
   resize();
   window.addEventListener('resize',resize);
 
-  // Generate candles
-  const N=50;
+  // Generate candles starting around BTC price
+  const N=55;
   let candles=[];
-  let price=60000;
+  let price=59800;
   for(let i=0;i<N;i++){
     const o=price;
-    const chg=(Math.random()-0.48)*300;
+    const chg=(Math.random()-0.51)*350;
     const c2=o+chg;
-    const h=Math.max(o,c2)+(Math.random()*120);
-    const l=Math.min(o,c2)-(Math.random()*120);
+    const h=Math.max(o,c2)+(Math.random()*140);
+    const l=Math.min(o,c2)-(Math.random()*140);
     candles.push({o,c:c2,h,l});
     price=c2;
   }
 
-  // Heatmap levels (liquidez)
-  const liqLevels=[
-    {price:61200,strength:0.9,col:'rgba(255,69,96,0.55)'},
-    {price:60800,strength:0.6,col:'rgba(139,92,246,0.4)'},
-    {price:60400,strength:0.75,col:'rgba(139,92,246,0.45)'},
-    {price:59600,strength:0.85,col:'rgba(0,255,102,0.45)'},
-    {price:59200,strength:0.5,col:'rgba(0,255,102,0.3)'},
-    {price:58800,strength:0.65,col:'rgba(0,255,102,0.35)'},
+  // HEATMAP BANDS — exact look from the real tool
+  // Top cluster (100x leverage zone) — 5 green bands
+  // Bottom cluster (50x zone) — 4 teal/cyan bands
+  const heatBands=[
+    // TOP CLUSTER — 100x zone
+    {pctFromTop:0.10, width:0.95, alpha:0.18, color:[0,255,102],  h:10, glow:true},
+    {pctFromTop:0.12, width:0.88, alpha:0.22, color:[0,255,102],  h:8,  glow:true},
+    {pctFromTop:0.14, width:0.78, alpha:0.28, color:[0,200,255],  h:7,  glow:true},
+    {pctFromTop:0.16, width:0.65, alpha:0.20, color:[0,200,255],  h:7,  glow:false},
+    {pctFromTop:0.19, width:0.50, alpha:0.15, color:[0,150,255],  h:6,  glow:false},
+    // BOTTOM CLUSTER — 50x zone
+    {pctFromTop:0.58, width:0.98, alpha:0.30, color:[0,220,255],  h:12, glow:true},
+    {pctFromTop:0.60, width:0.90, alpha:0.22, color:[0,200,255],  h:8,  glow:true},
+    {pctFromTop:0.62, width:0.75, alpha:0.18, color:[0,255,150],  h:7,  glow:true},
+    {pctFromTop:0.65, width:0.55, alpha:0.14, color:[0,255,102],  h:6,  glow:false},
   ];
 
   let tick=0;
   function draw(){
-    if(!W||!H){resize();return;}
+    if(!W||!H){resize();requestAnimationFrame(draw);return;}
     ctx.clearRect(0,0,W,H);
 
-    // price range
+    // Background grid lines (subtle)
+    ctx.strokeStyle='rgba(255,255,255,0.03)';
+    ctx.lineWidth=1;
+    for(let i=0;i<6;i++){
+      const y=H/6*i;
+      ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    }
+
+    // ---- HEATMAP BANDS (behind candles) ----
+    heatBands.forEach(b=>{
+      const y=b.pctFromTop*H;
+      const pulse=0.8+0.2*Math.sin(tick*0.04+(b.pctFromTop*20));
+      const effAlpha=b.alpha*pulse;
+      const effW=b.width*W*pulse;
+      const [r,g,bl]=b.color;
+
+      // Main band (left-solid, right-fade)
+      const grd=ctx.createLinearGradient(0,0,effW,0);
+      grd.addColorStop(0,`rgba(${r},${g},${bl},${effAlpha*0.3})`);
+      grd.addColorStop(0.05,`rgba(${r},${g},${bl},${effAlpha})`);
+      grd.addColorStop(0.85,`rgba(${r},${g},${bl},${effAlpha*0.7})`);
+      grd.addColorStop(1,`rgba(${r},${g},${bl},0)`);
+      ctx.fillStyle=grd;
+      ctx.fillRect(0,y-b.h/2,effW,b.h);
+
+      // Glow effect on hot bands
+      if(b.glow){
+        ctx.shadowColor=`rgba(${r},${g},${bl},0.8)`;
+        ctx.shadowBlur=8+4*pulse;
+        const grd2=ctx.createLinearGradient(0,0,effW*0.7,0);
+        grd2.addColorStop(0,`rgba(${r},${g},${bl},0)`);
+        grd2.addColorStop(0.1,`rgba(${r},${g},${bl},${effAlpha*0.5})`);
+        grd2.addColorStop(0.5,`rgba(${r},${g},${bl},${effAlpha*0.3})`);
+        grd2.addColorStop(1,`rgba(${r},${g},${bl},0)`);
+        ctx.fillStyle=grd2;
+        ctx.fillRect(0,y-1,effW*0.7,2);
+        ctx.shadowBlur=0;ctx.shadowColor='transparent';
+      }
+    });
+
+    // ---- CANDLES ----
     const prices=candles.flatMap(c=>[c.h,c.l]);
-    const minP=Math.min(...prices)-200;
-    const maxP=Math.max(...prices)+200;
+    const minP=Math.min(...prices)-400;
+    const maxP=Math.max(...prices)+400;
     const range=maxP-minP;
     const toY=p=>H-(p-minP)/range*H;
 
-    // Draw liquidez heatmap bands
-    liqLevels.forEach(l=>{
-      const y=toY(l.price);
-      const pulse=0.7+0.3*Math.sin(tick*0.05+(l.price%100)/100*Math.PI);
-      const grd=ctx.createLinearGradient(0,0,W,0);
-      grd.addColorStop(0,'transparent');
-      grd.addColorStop(0.2,l.col.replace('0.','0.'+(l.strength*pulse).toFixed(2).slice(2)));
-      grd.addColorStop(0.8,l.col.replace('0.','0.'+(l.strength*pulse*0.6).toFixed(2).slice(2)));
-      grd.addColorStop(1,'transparent');
-      ctx.fillStyle=grd;
-      ctx.fillRect(0,y-6,W,12);
-    });
-
-    // Candles
-    const cw=Math.max(4,W/N-1.5);
-    const pad=(W-N*(cw+1.5))/2;
+    const cw=Math.max(3,W/N-1.2);
+    const pad=4;
     candles.forEach((c,i)=>{
-      const x=pad+i*(cw+1.5);
+      const x=pad+i*(cw+1.2);
       const oy=toY(c.o),cy=toY(c.c),hy=toY(c.h),ly=toY(c.l);
       const bull=c.c>=c.o;
-      ctx.strokeStyle=bull?'rgba(0,255,102,0.7)':'rgba(255,69,96,0.7)';
+      // Wick
+      ctx.strokeStyle=bull?'rgba(0,255,102,0.6)':'rgba(255,69,96,0.6)';
       ctx.lineWidth=1;
       ctx.beginPath();ctx.moveTo(x+cw/2,hy);ctx.lineTo(x+cw/2,ly);ctx.stroke();
-      ctx.fillStyle=bull?'rgba(0,255,102,0.75)':'rgba(255,69,96,0.75)';
+      // Body
+      ctx.fillStyle=bull?'rgba(0,255,102,0.8)':'rgba(255,69,96,0.8)';
       const top=Math.min(oy,cy),h2=Math.max(1,Math.abs(oy-cy));
       ctx.fillRect(x,top,cw,h2);
     });
 
     // Animate last candle
     const last=candles[N-1];
-    const delta=(Math.random()-0.48)*80;
-    last.c+=delta;
+    last.c+=(Math.random()-0.50)*60;
     last.h=Math.max(last.h,last.c);
     last.l=Math.min(last.l,last.c);
 
-    // Price line
+    // Price dashed line
     const lastY=toY(last.c);
-    ctx.strokeStyle='rgba(0,255,102,0.5)';
-    ctx.setLineDash([4,4]);
-    ctx.lineWidth=1;
+    ctx.strokeStyle='rgba(0,255,102,0.4)';
+    ctx.setLineDash([3,4]);ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(0,lastY);ctx.lineTo(W,lastY);ctx.stroke();
     ctx.setLineDash([]);
 
-    // Price tag
-    ctx.fillStyle='rgba(0,255,102,0.9)';
-    ctx.fillRect(0,lastY-8,60,16);
+    // Price label (left side, matching real tool)
+    ctx.fillStyle='rgba(0,255,102,0.95)';
+    const lbl='$'+last.c.toFixed(0);
+    const tw=ctx.measureText(lbl).width+10;
+    ctx.fillRect(0,lastY-8,tw,16);
     ctx.fillStyle='#000';
-    ctx.font='700 9px JetBrains Mono,monospace';
-    ctx.fillText('$'+(last.c).toFixed(0),4,lastY+3.5);
+    ctx.font='bold 9px JetBrains Mono,monospace';
+    ctx.fillText(lbl,5,lastY+3.5);
 
     tick++;
     requestAnimationFrame(draw);
   }
   draw();
 
-  // Update price display
+  // Update main price display
   setInterval(()=>{
     const last=candles[N-1];
-    document.getElementById('priceDisplay').textContent='$'+last.c.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    const el=document.getElementById('priceDisplay');
+    if(el) el.textContent='$'+last.c.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
   },500);
+})();
+
+// ===== VOLUME PROFILE (right panel) — animated =====
+(function(){
+  const canvas=document.getElementById('volProfileCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){
+    const r=canvas.parentElement.getBoundingClientRect();
+    W=canvas.width=r.width||115;H=canvas.height=r.height||430;
+  }
+  resize();
+  window.addEventListener('resize',resize);
+
+  // Price levels from ~57600 to ~61600
+  const ROWS=30;
+  const minP=57400, maxP=61800;
+  const step=(maxP-minP)/ROWS;
+
+  // Generate VPVR data — POC around 59400-59600
+  const pocIdx=Math.round(ROWS*0.52);
+  let volumes=Array.from({length:ROWS},(_,i)=>{
+    const dist=Math.abs(i-pocIdx);
+    const base=Math.exp(-dist*dist/18);
+    return 0.15+base*0.85+(Math.random()*0.08);
+  });
+
+  // Key nodes with dollar labels
+  const nodes=[
+    {row:Math.round(ROWS*0.33), label:'$56.3M', color:'rgba(0,255,102,0.9)'},
+    {row:Math.round(ROWS*0.50), label:'$63.7M', color:'rgba(0,255,102,0.9)'},
+    {row:Math.round(ROWS*0.70), label:'$70.7M', color:'rgba(0,255,102,0.9)'},
+  ];
+
+  let tick=0;
+  function draw(){
+    if(!W||!H){resize();requestAnimationFrame(draw);return;}
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle='#080A0F';
+    ctx.fillRect(0,0,W,H);
+
+    const rowH=H/ROWS;
+    const maxVol=Math.max(...volumes);
+
+    volumes.forEach((v,i)=>{
+      const y=i*rowH;
+      const barW=(v/maxVol)*(W-38);
+      const pctFromPoc=Math.abs(i-pocIdx)/pocIdx;
+      // Color: bright red at extremes, dark near poc, green at key nodes
+      const isNode=nodes.some(n=>n.row===i);
+      const isPoc=i===pocIdx;
+      let color;
+      if(isPoc){color='rgba(0,255,102,0.7)';}
+      else if(isNode){color='rgba(0,255,102,0.55)';}
+      else if(pctFromPoc>0.6){color='rgba(120,20,20,0.6)';}
+      else{color='rgba(90,20,20,0.5)';}
+
+      ctx.fillStyle=color;
+      ctx.fillRect(0,y+1,barW,rowH-2);
+
+      // Price label every ~5 rows
+      if(i%4===0){
+        const p=maxP-i*step;
+        ctx.fillStyle='rgba(255,255,255,0.25)';
+        ctx.font='8px JetBrains Mono,monospace';
+        ctx.fillText(p.toFixed(0),barW+2,y+rowH/2+3);
+      }
+    });
+
+    // Dollar labels at key nodes
+    nodes.forEach(n=>{
+      const y=n.row*rowH;
+      ctx.fillStyle=n.color;
+      ctx.font='bold 8px JetBrains Mono,monospace';
+      ctx.fillText(n.label,2,y+rowH/2+3);
+      // Small marker line
+      ctx.strokeStyle=n.color.replace('0.9','0.4');
+      ctx.lineWidth=1;
+      ctx.beginPath();ctx.moveTo(0,y+rowH);ctx.lineTo(W,y+rowH);ctx.stroke();
+    });
+
+    // Animate — subtle pulse on volumes
+    if(tick%3===0){
+      const idx=Math.floor(Math.random()*ROWS);
+      volumes[idx]+=((Math.random()-0.5)*0.06);
+      volumes[idx]=Math.max(0.1,Math.min(1,volumes[idx]));
+    }
+
+    tick++;
+    requestAnimationFrame(draw);
+  }
+  draw();
 })();
 
 // ===== DOOM (order book) — animated with flash =====
