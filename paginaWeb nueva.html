@@ -906,6 +906,31 @@ canvas#chartCanvas{width:100%!important;height:100%!important;display:block;}
 .step-d{font-size:11px;color:var(--text2);line-height:1.6;}
 
 /* LEVELS */
+/* TRIAL BANNER */
+.trial-banner{display:flex;align-items:center;gap:24px;background:rgba(0,255,102,0.04);border:1px solid rgba(0,255,102,0.2);border-radius:14px;padding:24px 28px;margin:40px 0 48px;flex-wrap:wrap;}
+.trial-days{font-family:'Orbitron',sans-serif;font-size:40px;font-weight:900;color:var(--green);line-height:1;min-width:60px;text-align:center;}
+.trial-days span{display:block;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--green);opacity:0.7;text-transform:uppercase;margin-top:2px;}
+.trial-body{flex:1;min-width:200px;}
+.trial-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.trial-title strong{color:var(--green);}
+.trial-sub{font-size:12px;color:var(--text2);line-height:1.6;}
+.trial-cta{padding:12px 22px;background:var(--green);color:#000;border:none;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;transition:0.2s;}
+.trial-cta:hover{background:#1aff75;transform:translateY(-1px);}
+/* TIERS */
+.tiers-row{display:flex;align-items:stretch;gap:0;overflow-x:auto;padding-bottom:8px;}
+.tier-card{flex:1;min-width:160px;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:18px 16px;transition:0.2s;}
+.tier-card:hover{border-color:rgba(var(--tc,255,255,255),0.4);transform:translateY(-2px);}
+.tier-arrow{display:flex;align-items:center;padding:0 8px;color:var(--text3);font-size:18px;flex-shrink:0;}
+.tier-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.tier-icon{width:34px;height:34px;border-radius:8px;border:1px solid;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;flex-shrink:0;}
+.tier-name{font-size:14px;font-weight:800;line-height:1;}
+.tier-vol{font-size:10px;color:var(--text3);margin-top:3px;font-family:'JetBrains Mono',monospace;}
+.tier-tools{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:6px;}
+.tier-tools li{font-size:11px;color:var(--text2);padding-left:10px;position:relative;line-height:1.4;}
+.tier-tools li::before{content:'·';position:absolute;left:0;color:var(--text3);}
+.tier-prev{color:var(--text3) !important;font-style:italic;}
+.tier-prev::before{content:'↑' !important;}
+/* OLD LEVELS (keep for responsive) */
 .levels-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:48px;}
 .lv-card{
   background:var(--bg2);border:1px solid var(--border);border-radius:10px;
@@ -1201,16 +1226,106 @@ footer{
 </section>
 
 <!-- NIVELES -->
-<section class="section" id="niveles" style="background:var(--bg2);border-top:1px solid var(--border)">
-  <div class="section-lbl">Sistema de progresión</div>
-  <div class="section-h2">Desbloquea con tu volumen</div>
-  <p class="section-p">Los primeros 30 días tienes acceso casi completo. Después, cada herramienta se desbloquea según tu volumen mensual operado en Bitunix.</p>
-  <div class="levels-row">
-    <div class="lv-card"><div class="lv-icon">🥉</div><div class="lv-name" style="color:#cd7f32">Bronce</div><div class="lv-vol">$50K+/mes</div><div class="lv-bar"><div style="height:100%;width:20%;background:#cd7f32;border-radius:2px"></div></div></div>
-    <div class="lv-card"><div class="lv-icon">🥈</div><div class="lv-name" style="color:#c0c0c0">Plata</div><div class="lv-vol">$150K+/mes</div><div class="lv-bar"><div style="height:100%;width:40%;background:#c0c0c0;border-radius:2px"></div></div></div>
-    <div class="lv-card"><div class="lv-icon">🥇</div><div class="lv-name" style="color:var(--gold)">Oro</div><div class="lv-vol">$500K+/mes</div><div class="lv-bar"><div style="height:100%;width:60%;background:var(--gold);border-radius:2px"></div></div></div>
-    <div class="lv-card"><div class="lv-icon">💎</div><div class="lv-name" style="color:#a78bfa">Elite</div><div class="lv-vol">$1M+/mes</div><div class="lv-bar"><div style="height:100%;width:80%;background:#a78bfa;border-radius:2px"></div></div></div>
-    <div class="lv-card" style="border-color:rgba(0,255,102,0.25)"><div class="lv-icon">⚡</div><div class="lv-name" style="color:var(--green)">VIP Elite</div><div class="lv-vol">$3M+/mes</div><div class="lv-bar"><div style="height:100%;width:100%;background:var(--green);border-radius:2px"></div></div></div>
+<section class="section" id="niveles" style="border-top:1px solid var(--border)">
+  <div class="section-lbl" style="text-align:center">Progresión por volumen</div>
+  <div class="section-h2" style="text-align:center">Desbloquea el ecosistema</div>
+
+  <!-- BANNER 3 DÍAS -->
+  <div class="trial-banner">
+    <div class="trial-days">3<span>días</span></div>
+    <div class="trial-body">
+      <div class="trial-title">Acceso a <strong>Delta Matrix</strong> al registrarte y fondear</div>
+      <div class="trial-sub">Nuestra herramienta estrella — libro de órdenes en vivo, heatmap de liquidez, footprint, CVD y alertas IA. Tres días completos para que la experimentes antes de operar con volumen.</div>
+    </div>
+    <button class="trial-cta" onclick="openRegister()">Quiero mis 3 días →</button>
+  </div>
+
+  <!-- PROGRESIÓN -->
+  <div class="tiers-row">
+
+    <div class="tier-card" style="--tc:#cd7f32">
+      <div class="tier-head">
+        <div class="tier-icon" style="background:rgba(205,127,50,0.12);border-color:rgba(205,127,50,0.3);color:#cd7f32">B</div>
+        <div>
+          <div class="tier-name" style="color:#cd7f32">Bronce</div>
+          <div class="tier-vol">0 — 10K USDT / sem</div>
+        </div>
+      </div>
+      <ul class="tier-tools">
+        <li>Academia de Trading</li>
+        <li>DCA Cuántico</li>
+        <li>Comunidad activa 24/7</li>
+        <li>Calculadoras de Gestión (x3)</li>
+      </ul>
+    </div>
+
+    <div class="tier-arrow">→</div>
+
+    <div class="tier-card" style="--tc:#c0c0c0">
+      <div class="tier-head">
+        <div class="tier-icon" style="background:rgba(192,192,192,0.12);border-color:rgba(192,192,192,0.3);color:#c0c0c0">P</div>
+        <div>
+          <div class="tier-name" style="color:#c0c0c0">Plata</div>
+          <div class="tier-vol">10K — 25K USDT / sem</div>
+        </div>
+      </div>
+      <ul class="tier-tools">
+        <li class="tier-prev">+ Todo Bronce</li>
+        <li>Bitácora Manual Profesional</li>
+      </ul>
+    </div>
+
+    <div class="tier-arrow">→</div>
+
+    <div class="tier-card" style="--tc:#F0C040">
+      <div class="tier-head">
+        <div class="tier-icon" style="background:rgba(240,192,64,0.12);border-color:rgba(240,192,64,0.3);color:#F0C040">O</div>
+        <div>
+          <div class="tier-name" style="color:#F0C040">Oro</div>
+          <div class="tier-vol">25K — 50K USDT / sem</div>
+        </div>
+      </div>
+      <ul class="tier-tools">
+        <li class="tier-prev">+ Todo Plata</li>
+        <li>Bitácora Automática Bitunix</li>
+        <li style="font-size:10px;opacity:0.6">Registros en tiempo real</li>
+      </ul>
+    </div>
+
+    <div class="tier-arrow">→</div>
+
+    <div class="tier-card" style="--tc:#a78bfa">
+      <div class="tier-head">
+        <div class="tier-icon" style="background:rgba(167,139,250,0.12);border-color:rgba(167,139,250,0.3);color:#a78bfa">E</div>
+        <div>
+          <div class="tier-name" style="color:#a78bfa">Elite</div>
+          <div class="tier-vol">+50K USDT / sem</div>
+        </div>
+      </div>
+      <ul class="tier-tools">
+        <li class="tier-prev">+ Todo Oro</li>
+        <li>Delta Matrix completa</li>
+        <li>Bots de trading</li>
+      </ul>
+    </div>
+
+    <div class="tier-arrow">→</div>
+
+    <div class="tier-card" style="--tc:#00FF66;border-color:rgba(0,255,102,0.25)">
+      <div class="tier-head">
+        <div class="tier-icon" style="background:rgba(0,255,102,0.12);border-color:rgba(0,255,102,0.35);color:var(--green)">V</div>
+        <div>
+          <div class="tier-name" style="color:var(--green)">VIP Elite</div>
+          <div class="tier-vol">+1M USDT / mes</div>
+        </div>
+      </div>
+      <ul class="tier-tools">
+        <li class="tier-prev">+ Todo Elite</li>
+        <li>Cashback hasta 50% comisiones</li>
+        <li>Pre-lanzamientos exclusivos</li>
+      </ul>
+    </div>
+
   </div>
 </section>
 
