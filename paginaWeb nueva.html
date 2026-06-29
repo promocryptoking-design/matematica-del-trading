@@ -2088,26 +2088,38 @@ async function doRegister(){
   const uid=document.getElementById('regUid').value.trim();
   const msg=document.getElementById('regMsg');
   const btn=document.getElementById('regBtn');
-  if(!uid){showMsg(msg,'Ingresa tu UID','err');return;}
+  if(!uid){showMsg(msg,'Ingresa tu UID de Bitunix','err');return;}
+  if(!/^\d+$/.test(uid)){showMsg(msg,'El UID solo contiene números','err');return;}
   btn.disabled=true;btn.textContent='⏳ Consultando Bitunix...';
   showMsg(msg,'Verificando con Bitunix...','load');
-  const soporte=`<div style="margin-top:10px"><a href="https://t.me/cryptokingc" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:rgba(0,136,204,0.08);color:#0088cc;border:1px solid rgba(0,136,204,0.25);border-radius:7px;text-decoration:none;font-size:12px;font-weight:600">💬 Contactar Soporte</a></div>`;
+  const soporte=`<div style="margin-top:10px"><a href="https://t.me/cryptokingc" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:rgba(0,136,204,0.08);color:#0088cc;border:1px solid rgba(0,136,204,0.25);border-radius:7px;text-decoration:none;font-size:12px;font-weight:600">Contactar Soporte</a></div>`;
   try{
-    const r=await fetch('https://validador.ligalamatematicadeltrading.club/api/validar-uid',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid,telegramUser:'registro_web'})});
+    const r=await fetch('https://ecosistema.ligalamatematicadeltrading.club/api/registrar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({uid})});
     const d=await r.json();
     if(d.success){
       btn.style.display='none';
-      msg.style.display='block';msg.className='msg-ok';
-      msg.innerHTML='✅ ¡Validado! <button onclick="sessionStorage.setItem(\'acceso_vip\',\'aprobado_por_servidor\');sessionStorage.setItem(\'uid_usuario\',\''+uid+'\');window.location.href=\'/vip.html\'" style="margin-left:10px;padding:6px 14px;background:var(--green);color:#000;border:none;border-radius:6px;font-weight:800;cursor:pointer;font-size:12px">Ingresar →</button>';
+      sessionStorage.setItem('uid_vip',uid);
+      sessionStorage.setItem('tier_vip',d.tier||'Bronce');
+      let html=`<div style="background:rgba(0,255,102,0.06);border:1px solid rgba(0,255,102,0.3);border-radius:10px;padding:16px;text-align:center">
+        <div style="font-size:13px;font-weight:800;color:var(--green);margin-bottom:4px">¡Acceso autorizado!</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:14px">Rango inicial: <strong style="color:var(--green)">${d.tier||'Bronce'}</strong></div>`;
+      if(d.enlace){
+        html+=`<a href="${d.enlace}" target="_blank" style="display:block;padding:11px;background:var(--green);color:#000;border-radius:8px;font-weight:800;font-size:13px;text-decoration:none;margin-bottom:8px">Unirme al grupo VIP →</a>
+        <div style="font-size:10px;color:rgba(255,255,255,0.4)">Link de uso único · expira en 5 minutos</div>`;
+      }else{
+        html+=`<div style="font-size:12px;color:rgba(255,255,255,0.5)">Registro exitoso. Contacta soporte para recibir tu enlace.</div>${soporte}`;
+      }
+      html+=`</div>`;
+      msg.style.display='block';msg.className='msg-ok';msg.innerHTML=html;
     }else{
-      btn.disabled=false;btn.textContent='🛡️ Validar y obtener acceso';
+      btn.disabled=false;btn.textContent='Validar y obtener acceso';
       msg.style.display='block';msg.className='msg-err';
       msg.innerHTML=(d.mensaje||'UID no válido o sin depósito.')+soporte;
     }
   }catch(e){
-    btn.disabled=false;btn.textContent='🛡️ Validar y obtener acceso';
+    btn.disabled=false;btn.textContent='Validar y obtener acceso';
     msg.style.display='block';msg.className='msg-err';
-    msg.innerHTML='Error de conexión'+soporte;
+    msg.innerHTML='Error de conexión. Intenta de nuevo.'+soporte;
   }
 }
 
