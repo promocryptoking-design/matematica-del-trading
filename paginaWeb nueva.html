@@ -2105,10 +2105,11 @@ async function doRegister(){
         <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:14px">Rango inicial: <strong style="color:var(--green)">${d.tier||'Bronce'}</strong></div>`;
       if(d.enlace){
         html+=`<a href="${d.enlace}" target="_blank" style="display:block;padding:11px;background:var(--green);color:#000;border-radius:8px;font-weight:800;font-size:13px;text-decoration:none;margin-bottom:8px">Unirme al grupo VIP →</a>
-        <div style="font-size:10px;color:rgba(255,255,255,0.4)">Link de uso único · expira en 5 minutos</div>`;
+        <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:12px">Link de uso único · expira en 5 minutos</div>`;
       }else{
-        html+=`<div style="font-size:12px;color:rgba(255,255,255,0.5)">Registro exitoso. Contacta soporte para recibir tu enlace.</div>${soporte}`;
+        html+=`<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:12px">Registro exitoso. Contacta al administrador para recibir tu enlace.</div>`;
       }
+      html+=`<a href="https://t.me/cryptokingc" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px;background:rgba(0,136,204,0.08);color:#0088cc;border:1px solid rgba(0,136,204,0.2);border-radius:8px;text-decoration:none;font-size:12px;font-weight:600">Contactar administración →</a>`;
       html+=`</div>`;
       msg.style.display='block';msg.className='msg-ok';msg.innerHTML=html;
     }else{
